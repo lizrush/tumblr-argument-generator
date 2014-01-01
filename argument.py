@@ -2,6 +2,25 @@
 
 from random import choice
 
+def generate_term():
+	return choice([
+		'a',
+		'bi',
+		'dandy',
+		'demi',
+		'gender',
+		'multi',
+		'pan',
+		'poly',
+	]) + choice([
+		'amorous',
+		'femme',
+		'fluid',
+		'queer',
+		'romantic',
+		'sexual',
+	])
+
 intro = [
 	'burn in hell',
 	'check your privilege',
@@ -24,7 +43,6 @@ marginalized = [
 		'activist',
 		'agender',
 		'appearance',
-		'asexual',
 		'asian',
 		'attractive',
 		'bi',
@@ -38,7 +56,6 @@ marginalized = [
 		'dandy',
 		'deathfat',
 		'demi',
-		'demiromantic',
 		'differently abled',
 		'disabled',
 		'diversity',
@@ -51,11 +68,8 @@ marginalized = [
 		'fatty',
 		'female',
 		'feminist',
-		'femme',
-		'genderfluid',
 		'genderfuck',
 		'genderless',
-		'genderqueer',
 		'hair',
 		'height',
 		'indigenous',
@@ -70,12 +84,9 @@ marginalized = [
 		'non-gender',
 		'non-white',
 		'obesity',
-		'other',
 		'otherkin',
 		'pansexual',
-		'polyamorous',
 		'polygender',
-		'polyromantic',
 		'privilege',
 		'prosthetic',
 		'queer',
@@ -106,7 +117,8 @@ marginalized = [
 		'intolerant',
 		'racist',
 		'sexualizing',
-	]]
+    ]
+]
 privileged = [
 	[
 		'able-bodied',
@@ -131,7 +143,8 @@ privileged = [
 		'patriarch',
 		'sexist',
 		'privileged',
-	]]
+	]
+]
 finisher = [
 	'asshole',
 	'bigot',
@@ -147,7 +160,10 @@ print('{intro}, you {description} {marginalized[0]}-{marginalized[1]}, {privileg
 	intro=choice(intro),
 	description=choice(description),
 	marginalized=[
-		choice(marginalized[0]),
+		choice([
+			generate_term(),
+			choice(marginalized[0]),
+		]),
 		choice(marginalized[1]),
 	],
 	privileged=[
