@@ -1,0 +1,27 @@
+{
+	"name": "tumblr-argument-generator",
+	"version": "0.0.1a1",
+	"private": true,
+	"author": "Kim Silkebækken <kim.silkebaekken@gmail.com>",
+	"description": "Tumblr Argument Generator",
+	"main": "./app/main",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Lokaltog/tumblr-argument-generator.git"
+	},
+	"dependencies" : {
+		"jade": "*",
+		"nib": "*",
+		"stylus": "*",
+		"uglify-js": "*",
+
+		"grunt": "*",
+		"grunt-contrib-jade": "*",
+		"grunt-contrib-requirejs": "*",
+		"grunt-contrib-stylus": "*",
+		"matchdep": "*"
+	},
+	"engines": {
+		"node": ">=0.10"
+	}
+}
