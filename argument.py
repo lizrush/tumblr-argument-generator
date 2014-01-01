@@ -100,12 +100,12 @@ marginalized = [
 		'oppressive',
 		'phobic',
 		'shaming',
-	    'denying',
-	    'discriminating',
-	    'hypersexualizing',
-	    'intolerant',
-	    'racist',
-	    'sexualizing',
+		'denying',
+		'discriminating',
+		'hypersexualizing',
+		'intolerant',
+		'racist',
+		'sexualizing',
 	]]
 privileged = [
 	[
@@ -130,8 +130,8 @@ privileged = [
 		'overprivileged',
 		'patriarch',
 		'sexist',
-	    'privileged',
-    ]]
+		'privileged',
+	]]
 finisher = [
 	'asshole',
 	'bigot',
