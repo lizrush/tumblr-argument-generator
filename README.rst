@@ -1,15 +1,15 @@
-Tumblr Social Justificator
-==========================
+Tumblr Argument Generator
+=========================
 
 Clone the repo and run ``./argument.py`` to receive a politically correct argument
-for a social justice discussion on tumblr.
+to win any social justice discussion on tumblr.
 
 Examples
 --------
 
-* BURN IN HELL, YOU CURVY-PHOBIC MOTHERFUCKER
-* SCREW YOU, YOU OTHERWISE ABLED-DISCRIMINATING SHITLORD
-* BURN IN HELL, YOU TRANSGENDER-SHAMING PIECE OF SHIT
+* BURN IN HELL, YOU FUCKING BIGENDER-DENYING, WHITE-OVERPRIVILEGED SCUM
+* SHUT UP, YOU GOD DAMN QUEER-INTOLERANT, BINARY-NORMATIVE OPPRESSOR
+* FUCK YOU, YOU WORTHLESS CURVY-PHOBIC, APPEARANCE-PRIVILEGED PIECE OF SHIT
 
 Contributing
 ------------
