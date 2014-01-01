@@ -1,15 +1,11 @@
 Tumblr Argument Generator
 =========================
 
-Clone the repo and run ``./argument.py`` to receive a politically correct argument
-to win any social justice discussion on tumblr.
+Live demo
+---------
 
-Examples
---------
-
-* BURN IN HELL, YOU FUCKING BIGENDER-DENYING, WHITE-OVERPRIVILEGED SCUM
-* SHUT UP, YOU GOD DAMN QUEER-INTOLERANT, BINARY-NORMATIVE OPPRESSOR
-* FUCK YOU, YOU WORTHLESS CURVY-PHOBIC, APPEARANCE-PRIVILEGED PIECE OF SHIT
+Visit http://lokaltog.github.io/tumblr-argument-generator/ to receive a politically
+correct argument to win any social justice discussion on tumblr.
 
 Contributing
 ------------
