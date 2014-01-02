@@ -243,12 +243,10 @@ generateInsult = function (initial) {
 		result += ', you '
 
 		if (randomBoolean()) {
-			if (randomBoolean()) {
-				result += insultAdverbs.random() + ' '
-			}
-			if (randomBoolean()) {
-				result += marginalizedNouns.random() + '-' + marginalizedAdverbs.random() + ', '
-			}
+			result += insultAdverbs.random() + ' '
+		}
+		if (randomBoolean()) {
+			result += marginalizedNouns.random() + '-' + marginalizedAdverbs.random() + ', '
 		}
 	}
 	else {
