@@ -171,7 +171,7 @@ var generateSentence,
 	    'you make me sick',
 	    '%insult',
 	    'do you not see how offensive this is',
-	    'you are literally the worst person alive',
+	    'you are the worst person alive',
 	    'people like you should die',
     ]
 
