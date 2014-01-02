@@ -2,6 +2,25 @@ Array.prototype.random = function () {
 	return this[Math.floor(Math.random() * this.length)]
 }
 
+Array.prototype.randomize = function () {
+	var i = this.length, j, temp
+
+	while (--i) {
+		j = Math.floor(Math.random() * (i - 1))
+		temp = this[i]
+		this[i] = this[j]
+		this[j] = temp
+	}
+}
+
+Array.prototype.clone = function () {
+	return this.slice(0)
+}
+
+String.prototype.randomRepeat = function (len) {
+	return this + (new Array(Math.floor(Math.random() * (len - 1)))).join(this)
+}
+
 var generateSentence,
     generateInsult,
     generateParagraph,
@@ -165,11 +184,11 @@ var generateSentence,
 	    ['shame', 'shames', 'shaming', 'shamed'],
     ],
     sentences = [
-	    { forms: [2], format: 'you %insult, stop %verb %complement %person!!!' },
-	    { forms: [2], format: 'you are a %complement %verb %insult' },
-	    { forms: [2], format: 'you should stop %verb %complement %person' },
-	    { forms: [0], format: 'why the fuck do you feel the need to %verb %complement %person you %insult????' },
-	    { forms: [0], format: 'leave %complement %person alone you %insult' },
+	    { forms: [2], format: 'you %insult, stop %verb %complement %person', type: '!', },
+	    { forms: [2], format: 'you are a %complement %verb %insult', type: '!', },
+	    { forms: [2], format: 'you should stop %verb %complement %person', type: '!', },
+	    { forms: [0], format: 'why the fuck do you feel the need to %verb %complement %person you %insult', type: '?', },
+	    { forms: [0], format: 'leave %complement %person alone you %insult', type: '!', },
     ],
     subjects = [
 	    { names: ['one', 's/he', 'he/she', 'xe', 'ze', 'zie', 'hir'], be: 'is', singular: 1 },
@@ -189,15 +208,18 @@ var generateSentence,
 marginalizedNouns = marginalizedNouns.concat(sexualities)
 
 generateSentence = function () {
-	var index = Math.floor(verbs.length * Math.random())
-	var sentence = sentences.random()
-	var subject = subjects.random()
-	var verb = verbs[index]
-	var str = sentence.format
-	str = str.replace("%subject", subject.names.random()).replace("%be", subject.be)
-	str = str.replace("%verb", verb[sentence.forms.random()])
-	str = str.replace("%complement", marginalizedNouns.random())
+	var index = Math.floor(verbs.length * Math.random()),
+	    sentence = sentences.random(),
+	    subject = subjects.random(),
+	    verb = verbs[index],
+	    str = sentence.format
+
+	str = str.replace('%subject', subject.names.random()).replace('%be', subject.be)
+	str = str.replace('%verb', verb[sentence.forms.random()])
+	str = str.replace('%complement', marginalizedNouns.random())
 	str = str.replace('%person', ['people', 'aligned persons', 'persons', 'personalities'].random())
+	str += sentence.type.randomRepeat(5)
+
 	return str
 }
 
@@ -240,26 +262,28 @@ generateParagraph = function () {
 	    length = 3 + Math.random() * 10,
 	    sentence, i
 
-	result.push(generateInsult(true) + (new Array(Math.floor(Math.random() * 10))).join('!'))
+	result.push(generateInsult(true) + '!'.randomRepeat(10))
 
 	for (i = 0; i < length; i += 1) {
 		sentence = [
-			generateInsult(false),
+			generateInsult(false) + '!'.randomRepeat(5),
 			generateSentence(),
-			statements.random() + (new Array(Math.floor(Math.random() * 10))).join('!'),
+			statements.random() + '!'.randomRepeat(10),
 		].random().trim()
 
 		sentence = sentence.replace(/%privilege/gi, randomPrivilege)
 		sentence = sentence.replace(/%insult/gi, randomInsult)
 
-		sentence = sentence.replace(/you are/g, 'you\'re literally')
+		sentence = sentence.replace(/you are/g, function () {
+			return randomBoolean() ? 'you\'re literally' : 'you\'re'
+		})
 
 		result.push(randomBoolean() ? sentence.toUpperCase() : sentence)
 	}
 
 	result = result.join(' ')
 
-	result += '!' + (new Array(Math.floor(Math.random() * 20))).join('!')
+	result += '!'.randomRepeat(10)
 
 	return result
 }
