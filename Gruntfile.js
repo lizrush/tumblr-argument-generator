@@ -20,30 +20,10 @@ module.exports = function (grunt) {
 				}],
 			},
 		},
-		requirejs: {
-			options: {
-				baseUrl: './app/assets/js',
-				name: 'main',
-				optimize: 'uglify2',
-			},
+		uglify: {
 			production: {
-				options: {
-					out: 'webroot/static/js/main.js',
-					uglify2: {
-						compress: {
-							global_defs: {
-								DEBUG: false,
-							},
-						},
-						output: {
-							beautify: false,
-						},
-						mangle: true,
-						warnings: false,
-					},
-					paths: {
-						'jquery': 'empty:',
-					},
+				files: {
+					'webroot/static/js/main.js': 'app/assets/js/main.js',
 				},
 			},
 		},
@@ -71,7 +51,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('production', [
 		'jade:production',
-		'requirejs:production',
+		'uglify:production',
 		'stylus:production',
 	])
 }

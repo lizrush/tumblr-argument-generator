@@ -17,7 +17,7 @@
 
 		"grunt": "*",
 		"grunt-contrib-jade": "*",
-		"grunt-contrib-requirejs": "*",
+		"grunt-contrib-uglify": "*",
 		"grunt-contrib-stylus": "*",
 		"matchdep": "*"
 	},
