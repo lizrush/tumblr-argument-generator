@@ -15,7 +15,9 @@ define(
 		    intro = [
 			    'burn in hell',
 			    'check your privilege',
+			    'die in a fire',
 			    'fuck you',
+			    'kill yourself',
 			    'please die',
 			    'rot in hell',
 			    'screw you',
@@ -97,17 +99,17 @@ define(
 			    ],
 			    [
 				    'chauvinistic',
-				    'misogynistic',
-				    'nphobic',
-				    'oppressive',
-				    'phobic',
-				    'shaming',
 				    'denying',
 				    'discriminating',
 				    'hypersexualizing',
 				    'intolerant',
+				    'misogynistic',
+				    'nphobic',
+				    'oppressive',
+				    'phobic',
 				    'racist',
 				    'sexualizing',
+				    'shaming',
 			    ]
 		    ],
 		    privileged = [
@@ -132,8 +134,8 @@ define(
 				    'normative',
 				    'overprivileged',
 				    'patriarch',
-				    'sexist',
 				    'privileged',
+				    'sexist',
 			    ]
 		    ],
 		    finisher = [
@@ -143,7 +145,6 @@ define(
 			    'piece of shit',
 			    'rapist',
 			    'scum',
-			    'shitlord',
 			    'subhuman',
 		    ]
 
