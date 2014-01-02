@@ -202,6 +202,7 @@ var generateSentence,
 	    'people like you should die',
 	    'what do you have against gender abolition',
 	    'you are worse than hitler',
+	    'it\'s not my job to educate you, you %insult',
     ]
 
 // Add sexualities to marginalized groups
