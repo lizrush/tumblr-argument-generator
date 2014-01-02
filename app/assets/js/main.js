@@ -128,6 +128,7 @@ var generateSentence,
 	    'misogynist',
 	    'chauvinist',
 	    'nazi',
+	    'transmisogynist',
     ],
     sexualities = (function () {
 	    var result = [],
@@ -192,9 +193,9 @@ var generateSentence,
     sentences = [
 	    { forms: [2], format: 'you %insult, stop %verb %complement %person', type: '!', },
 	    { forms: [2], format: 'you are a %complement %verb %insult', type: '!', },
-	    { forms: [2], format: 'you should stop %verb %complement %person', type: '!', },
+	    { forms: [2], format: 'you should stop fucking %verb %complement %person', type: '!', },
 	    { forms: [0], format: 'why the fuck do you feel the need to %verb %complement %person you %insult', type: '?', },
-	    { forms: [0], format: 'leave %complement %person alone you %insult', type: '!', },
+	    { forms: [0], format: 'leave %complement %person the fuck alone you %insult', type: '!', },
     ],
     subjects = [
 	    { names: ['one', 's/he', 'he/she', 'xe', 'ze', 'zie', 'hir'], be: 'is', singular: 1 },
@@ -208,7 +209,11 @@ var generateSentence,
 	    'people like you should die',
 	    'what do you have against gender abolition',
 	    'you are worse than hitler',
-	    'it\'s not my job to educate you, you %insult',
+	    'it\'s not my job to educate you you %insult',
+	    'fuck off with your internalized misogyny',
+	    'you\'re perpetuating rape culture you %insult',
+	    'you\'re triggering me you %insult',
+	    'stop tone policing me you %insult',
     ]
 
 // Add sexualities to marginalized groups
@@ -225,7 +230,7 @@ generateSentence = function () {
 	str = str.replace('%verb', verb[sentence.forms.random()])
 	str = str.replace('%complement', marginalizedNouns.random())
 	str = str.replace('%person', ['people', 'aligned persons', 'persons', 'personalities'].random())
-	str += sentence.type.randomRepeat(5)
+	str += sentence.type.randomRepeat(10)
 
 	return str
 }
