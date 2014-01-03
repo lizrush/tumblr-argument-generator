@@ -215,7 +215,7 @@ var generateSentence,
 	    { forms: [2], format: 'you should stop fucking %verb %marginalize %person', type: '!', },
 	    { forms: [0], format: 'why the fuck do you feel the need to %verb %marginalize %person you %insult', type: '?', },
 	    { forms: [0], format: 'leave %marginalize %person the fuck alone you %insult', type: '!', },
-	    { forms: [0], format: 'stop fucking %verb %marginalize you %insult', type: '!', },
+	    { forms: [2], format: 'stop fucking %verb %marginalize %person you %insult', type: '!', },
 	    { forms: [0], format: 'what the fuck has %subject ever done to you you %insult', type: '!', },
     ],
     subjects = [
