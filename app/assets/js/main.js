@@ -301,18 +301,26 @@ generateInsult = function (initial) {
 	return result.trim()
 }
 
-generateParagraph = function () {
+generateParagraph = function (onlyInsult) {
 	var result = [],
 	    length = 3 + Math.random() * 10,
-	    sentence = '', i
+	    sentence = '', i, wrap
+
+	if (onlyInsult) {
+		length = 1
+	}
 
 	for (i = 0; i < length; i += 1) {
 		if (i === 0) {
-			if (randomBoolean()) {
+			if (randomBoolean() && !onlyInsult) {
 				sentence += intros.random() + ' '
 			}
 
-			sentence += generateInsult(true) + '!'.randomRepeat(10)
+			sentence += generateInsult(true)
+
+			if (!onlyInsult) {
+				sentence += '!'.randomRepeat(10)
+			}
 		}
 		else {
 			sentence = [
@@ -331,14 +339,51 @@ generateParagraph = function () {
 		})
 
 		// Randomly uppercase sentences
-		sentence = randomBoolean() ? sentence.toUpperCase() : sentence
+		sentence = (randomBoolean() || onlyInsult) ? sentence.toUpperCase() : sentence
+
+		// Tumblrize grammar
+		if ($('#tumblrize-grammar').prop('checked')) {
+			// Randomly add out-of-place commas
+			sentence = sentence.replace(/\b /g, function () {
+				return Math.random() > 0.05 ? ' ' : [',', '.'].random().randomRepeat(4)
+			})
+
+			// Randomly lowercase first characters
+			sentence = sentence.replace(/^(\w)/g, function (m, p1) {
+				return Math.random() > 0.3 ? p1 : p1.toLowerCase()
+			})
+
+			// Randomly add tildes and asterisks around sentences
+			if (Math.random() > 0.8) {
+				wrap = '~'.randomRepeat(5)
+				if (Math.random() > 0.3) {
+					wrap += '*'
+				}
+				sentence = wrap + sentence + wrap.split('').reverse().join('')
+			}
+
+			// Convert you/you're, etc
+			sentence = sentence.replace(/you're/g, 'ur')
+			sentence = sentence.replace(/YOU'RE/g, 'UR')
+			sentence = sentence.replace(/you/g, 'u')
+			sentence = sentence.replace(/YOU/g, 'U')
+			sentence = sentence.replace(/people/g, 'ppl')
+			sentence = sentence.replace(/PEOPLE/g, 'PPL')
+
+			// Add emoji faces
+			if (Math.random() > 0.8) {
+				sentence += emoji.random()
+			}
+		}
 
 		result.push(sentence)
 	}
 
 	result = result.join(' ')
 
-	result += '!'.randomRepeat(10)
+	if (!onlyInsult) {
+		result += '!'.randomRepeat(10)
+	}
 
 	return result
 }
@@ -346,55 +391,12 @@ generateParagraph = function () {
 $(document).ready(function () {
 	$('#argument')
 		.removeClass('loading')
-		.text(generateInsult(true).toUpperCase())
+		.text(generateParagraph(true))
 
 	$('.controls button.generate-insult').click(function () {
-		$('#argument').text(generateInsult(true).toUpperCase())
+		$('#argument').text(generateParagraph(true))
 	})
 	$('.controls button.generate-rant').click(function () {
-		$('#argument').text(generateParagraph())
-	})
-	$('.controls button.tumblrize-grammar').click(function () {
-		var text = $('#argument').text()
-
-		// Randomly add out-of-place commas
-		text = text.replace(/\b /g, function () {
-			return Math.random() > 0.05 ? ' ' : [',', '.'].random().randomRepeat(4)
-		})
-
-		// Randomly lowercase first characters
-		text = text.replace(/([!?\.]\s+)(\w)/g, function (m, p1, p2) {
-			return p1 + (Math.random() > 0.5 ? p2 : p2.toLowerCase())
-		})
-
-		// Randomly add tildes and asterisks around sentences
-		text = text.replace(/(\w.+?)([!?\.]+)/g, function (m, p1, p2) {
-			var wrap
-
-			if (Math.random() > 0.8) {
-				wrap = '~'.randomRepeat(5)
-				if (Math.random() > 0.3) {
-					wrap += '*'
-				}
-				return wrap + p1 + p2 + wrap.split('').reverse().join('')
-			}
-
-			return p1 + p2
-		})
-
-		// Convert you/you're, etc
-		text = text.replace(/you're/g, 'ur')
-		text = text.replace(/YOU'RE/g, 'UR')
-		text = text.replace(/you/g, 'u')
-		text = text.replace(/YOU/g, 'U')
-		text = text.replace(/people/g, 'ppl')
-		text = text.replace(/PEOPLE/g, 'PPL')
-
-		// Add emoji faces
-		text = text.replace(/([!?\.~]\s+)/gi, function (m, p1) {
-			return p1 + (Math.random() > 0.8 ? emoji.random() : '')
-		})
-
-		$('#argument').text(text)
+		$('#argument').text(generateParagraph(false))
 	})
 })
