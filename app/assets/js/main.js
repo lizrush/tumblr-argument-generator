@@ -359,7 +359,7 @@ $(document).ready(function () {
 
 		// Randomly add out-of-place commas
 		text = text.replace(/\b /g, function () {
-			return Math.random() > 0.1 ? ' ' : ','
+			return Math.random() > 0.05 ? ' ' : [',', '.'].random().randomRepeat(4)
 		})
 
 		// Randomly lowercase first characters
