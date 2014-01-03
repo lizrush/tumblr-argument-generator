@@ -242,6 +242,12 @@ var generateSentence,
 	    'you\'re triggering me you %insult',
 	    'stop tone policing me you %insult',
 	    'i hope you fucking die you %insult',
+    ],
+    emoji = [
+	    '(◕﹏◕✿)',
+	    '（　｀ー´）',
+	    '(•﹏•)',
+	    '└(｀0´)┘',
     ]
 
 // Add sexualities to marginalized groups
@@ -351,9 +357,9 @@ $(document).ready(function () {
 	$('.controls button.tumblrize-grammar').click(function () {
 		var text = $('#argument').text()
 
-		// Randomly add out-of-place period symbols
+		// Randomly add out-of-place commas
 		text = text.replace(/\b /g, function () {
-			return Math.random() > 0.05 ? ' ' : '. '
+			return Math.random() > 0.1 ? ' ' : ','
 		})
 
 		// Randomly lowercase first characters
@@ -361,13 +367,32 @@ $(document).ready(function () {
 			return p1 + (Math.random() > 0.5 ? p2 : p2.toLowerCase())
 		})
 
-		// Randomly add tildes around sentences
+		// Randomly add tildes and asterisks around sentences
 		text = text.replace(/(\w.+?)([!?\.]+)/g, function (m, p1, p2) {
+			var wrap
+
 			if (Math.random() > 0.8) {
 				wrap = '~'.randomRepeat(5)
-				return wrap + p1 + p2 + wrap
+				if (Math.random() > 0.3) {
+					wrap += '*'
+				}
+				return wrap + p1 + p2 + wrap.split('').reverse().join('')
 			}
+
 			return p1 + p2
+		})
+
+		// Convert you/you're, etc
+		text = text.replace(/you're/g, 'ur')
+		text = text.replace(/YOU'RE/g, 'UR')
+		text = text.replace(/you/g, 'u')
+		text = text.replace(/YOU/g, 'U')
+		text = text.replace(/people/g, 'ppl')
+		text = text.replace(/PEOPLE/g, 'PPL')
+
+		// Add emoji faces
+		text = text.replace(/([!?\.~]\s+)/gi, function (m, p1) {
+			return p1 + (Math.random() > 0.8 ? emoji.random() : '')
 		})
 
 		$('#argument').text(text)
