@@ -210,30 +210,38 @@ var generateSentence,
 	    ['shame', 'shames', 'shaming', 'shamed'],
     ],
     sentences = [
-	    { forms: [2], format: 'you %insult, stop %verb %complement %person', type: '!', },
-	    { forms: [2], format: 'you are a %complement %verb %insult', type: '!', },
-	    { forms: [2], format: 'you should stop fucking %verb %complement %person', type: '!', },
-	    { forms: [0], format: 'why the fuck do you feel the need to %verb %complement %person you %insult', type: '?', },
-	    { forms: [0], format: 'leave %complement %person the fuck alone you %insult', type: '!', },
+	    { forms: [2], format: 'you %insult, stop %verb %marginalize %person', type: '!', },
+	    { forms: [2], format: 'you are a %marginalize %verb %insult', type: '!', },
+	    { forms: [2], format: 'you should stop fucking %verb %marginalize %person', type: '!', },
+	    { forms: [0], format: 'why the fuck do you feel the need to %verb %marginalize %person you %insult', type: '?', },
+	    { forms: [0], format: 'leave %marginalize %person the fuck alone you %insult', type: '!', },
+	    { forms: [0], format: 'stop fucking %verb %marginalize you %insult', type: '!', },
+	    { forms: [0], format: 'what the fuck has %subject ever done to you you %insult', type: '!', },
     ],
     subjects = [
-	    { names: ['one', 's/he', 'he/she', 'xe', 'ze', 'zie', 'hir'], be: 'is', singular: 1 },
+	    { names: ['s/he', 'he/she', 'xe', 'ze'], be: 'is', singular: 1 },
+    ],
+    intros = [
+	    'wow. just. wow.',
+	    'no. just. no.',
+	    'this. is. NOT. okay!',
+	    'just a friendly reminder:',
     ],
     statements = [
-	    'wow. just. wow.',
 	    'you should be ashamed of yourself',
 	    'you make me sick',
 	    '%insult',
-	    'do you not see how offensive this is',
+	    'stop offending me you %insult',
 	    'you are the worst person alive',
 	    'people like you should die',
-	    'what do you have against gender abolition',
+	    'what the fuck do you have against gender abolition',
 	    'you are worse than hitler',
 	    'it\'s not my job to educate you you %insult',
-	    'fuck off with your internalized misogyny',
+	    'fuck your internalized misogyny',
 	    'you\'re perpetuating rape culture you %insult',
 	    'you\'re triggering me you %insult',
 	    'stop tone policing me you %insult',
+	    'i hope you fucking die you %insult',
     ]
 
 // Add sexualities to marginalized groups
@@ -246,10 +254,10 @@ generateSentence = function () {
 	    verb = verbs[index],
 	    str = sentence.format
 
-	str = str.replace('%subject', subject.names.random()).replace('%be', subject.be)
-	str = str.replace('%verb', verb[sentence.forms.random()])
-	str = str.replace('%complement', marginalizedNouns.random())
-	str = str.replace('%person', ['people', 'aligned persons', 'persons', 'personalities'].random())
+	str = str.replace(/%subject/gi, subject.names.random()).replace('%be', subject.be)
+	str = str.replace(/%verb/gi, verb[sentence.forms.random()])
+	str = str.replace(/%marginalize/gi, marginalizedNouns.random())
+	str = str.replace(/%person/gi, ['identifying', 'aligned', 'type of'].random() + ' ' + ['people', 'personalities'].random())
 	str += sentence.type.randomRepeat(10)
 
 	return str
@@ -290,11 +298,15 @@ generateInsult = function (initial) {
 generateParagraph = function () {
 	var result = [],
 	    length = 3 + Math.random() * 10,
-	    sentence, i
+	    sentence = '', i
 
 	for (i = 0; i < length; i += 1) {
 		if (i === 0) {
-			sentence = generateInsult(true) + '!'.randomRepeat(10)
+			if (randomBoolean()) {
+				sentence += intros.random() + ' '
+			}
+
+			sentence += generateInsult(true) + '!'.randomRepeat(10)
 		}
 		else {
 			sentence = [
