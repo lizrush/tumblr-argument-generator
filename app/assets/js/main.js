@@ -68,7 +68,6 @@ var generateSentence,
 	    'rape-apologist',
 	    'MRA',
 	    'neckbeard',
-	    'neckbear',
 	    'pedophile',
 	    'virgin',
 	    'basement dweller',
@@ -91,7 +90,7 @@ var generateSentence,
 	    'radfem', 'skinny', 'smallfat', 'stretchmark', 'thin',
 	    'third-gender', 'trans*', 'transethnic', 'transgender', 'transman',
 	    'transwoman', 'trigger', 'two-spirit', 'womyn', 'wymyn', 'saami', 'native american',
-	    'hijra', 'freeganist', 'transnormative', 'LGBT', 'LGBTQ+', 'LGBTQIA',
+	    'hijra', 'freeganist', 'transnormative', 'LGBTQIA+',
 	    'cross-dresser', 'androphilia', 'gynephilia', 'PoC', 'WoC',
     ],
     marginalizedAdverbs = [
@@ -293,23 +292,30 @@ generateParagraph = function () {
 	    length = 3 + Math.random() * 10,
 	    sentence, i
 
-	result.push(generateInsult(true) + '!'.randomRepeat(10))
-
 	for (i = 0; i < length; i += 1) {
-		sentence = [
-			generateInsult(false) + '!'.randomRepeat(5),
-			generateSentence(),
-			statements.random() + '!'.randomRepeat(10),
-		].random().trim()
+		if (i === 0) {
+			sentence = generateInsult(true) + '!'.randomRepeat(10)
+		}
+		else {
+			sentence = [
+				generateInsult(false) + '!'.randomRepeat(10),
+				generateSentence(),
+				statements.random() + '!'.randomRepeat(10),
+			].random().trim()
+		}
 
 		sentence = sentence.replace(/%privilege/gi, randomPrivilege)
 		sentence = sentence.replace(/%insult/gi, randomInsult)
 
+		// Randomly make stuff literal
 		sentence = sentence.replace(/you are/g, function () {
 			return randomBoolean() ? 'you\'re literally' : 'you\'re'
 		})
 
-		result.push(randomBoolean() ? sentence.toUpperCase() : sentence)
+		// Randomly uppercase sentences
+		sentence = randomBoolean() ? sentence.toUpperCase() : sentence
+
+		result.push(sentence)
 	}
 
 	result = result.join(' ')
@@ -329,5 +335,29 @@ $(document).ready(function () {
 	})
 	$('.controls button.generate-rant').click(function () {
 		$('#argument').text(generateParagraph())
+	})
+	$('.controls button.tumblrize-grammar').click(function () {
+		var text = $('#argument').text()
+
+		// Randomly add out-of-place period symbols
+		text = text.replace(/\b /g, function () {
+			return Math.random() > 0.05 ? ' ' : '. '
+		})
+
+		// Randomly lowercase first characters
+		text = text.replace(/([!?\.]\s+)(\w)/g, function (m, p1, p2) {
+			return p1 + (Math.random() > 0.5 ? p2 : p2.toLowerCase())
+		})
+
+		// Randomly add tildes around sentences
+		text = text.replace(/(\w.+?)([!?\.]+)/g, function (m, p1, p2) {
+			if (Math.random() > 0.8) {
+				wrap = '~'.randomRepeat(5)
+				return wrap + p1 + p2 + wrap
+			}
+			return p1 + p2
+		})
+
+		$('#argument').text(text)
 	})
 })

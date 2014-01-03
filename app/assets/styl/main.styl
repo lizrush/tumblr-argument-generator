@@ -34,6 +34,7 @@ a
 
 .controls
 	margin: 20px 0
+	display: block
 	button
 		background: linear-gradient(top, #fff, #eee)
 		border: 1px solid
@@ -44,9 +45,16 @@ a
 		outline: none
 		padding: 15px 50px
 		margin: 0 10px
+		transition: all .1s linear
 		&:active
 			background: linear-gradient(top, #ddd, #eee)
 			border-color: #aaa #ccc #ccc #aaa
+		&:hover
+			opacity: 1 !important
+		&.tumblrize-grammar
+			padding: 10px 30px
+			opacity: .4
+
 
 #footer
 	padding: 10px 0 0 0
