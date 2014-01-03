@@ -257,7 +257,7 @@ generateSentence = function () {
 	str = str.replace(/%subject/gi, subject.names.random()).replace('%be', subject.be)
 	str = str.replace(/%verb/gi, verb[sentence.forms.random()])
 	str = str.replace(/%marginalize/gi, marginalizedNouns.random())
-	str = str.replace(/%person/gi, ['identifying', 'aligned', 'type of'].random() + ' ' + ['people', 'personalities'].random())
+	str = str.replace(/%person/gi, ['identifying', 'aligned'].random() + ' ' + ['people', 'personalities'].random())
 	str += sentence.type.randomRepeat(10)
 
 	return str
