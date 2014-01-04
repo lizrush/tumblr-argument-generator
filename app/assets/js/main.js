@@ -43,6 +43,7 @@ var generateSentence,
 		    'fucking',
 		    'goddamn',
 		    'ignorant',
+		    'inconsiderate',
 		    'judgemental',
 		    'oppressive',
 		    'pathetic',
@@ -227,8 +228,8 @@ var generateSentence,
 		    ['shame', 'shaming', 'shaming'],
 	    ],
 	    sentence: [
-		    { forms: [0], format: 'why the fuck do you feel the need to {verb} {marginalizedNoun}-{personality} you {fullInsult}', type: '?', },
-		    { forms: [1], format: 'stop fucking {verb} {marginalizedNoun}-{personality} you {fullInsult}', type: '!', },
+		    { forms: [0], format: 'why the fuck do you feel the need to {verb} {marginalizedNoun}-{personality}', type: '?', },
+		    { forms: [1], format: 'stop fucking {verb} {marginalizedNoun}-{personality}', type: '!', },
 		    { forms: [1], format: 'you are a {marginalizedNoun}-{verb} {fullInsult}', type: '!', },
 		    { forms: [1], format: 'you should stop fucking {verb} {marginalizedNoun}-{personality}', type: '!', },
 		    { forms: [1], format: 'you {fullInsult}, stop {verb} {marginalizedNoun}-{personality}', type: '!', },
@@ -251,26 +252,26 @@ var generateSentence,
 	    ],
 	    statement: [
 		    'die in a fire',
+		    'fuck off',
 		    'fuck your {description} {terribleStuff}',
-		    'i hope you fucking die you {fullInsult}',
-		    'it\'s not my job to educate you you {fullInsult}',
-		    'leave {marginalizedNoun}-{personality} the fuck alone you {fullInsult}',
+		    'fucking address me as "{subject}"',
+		    'i hope you fucking die',
+		    'it\'s not my job to educate you',
+		    'leave {marginalizedNoun}-{personality} the fuck alone',
 		    'oh my god',
 		    'people like you deserve to die',
-		    'please address me as "{subject}" you inconsiderate {fullInsult}',
-		    'stop offending me you {fullInsult}',
-		    'stop tone policing me you {fullInsult}',
-		    'what the fuck do you have against {awesomeStuff} you {fullInsult}',
-		    'what the fuck has {subject} ever done to you you {fullInsult}',
+		    'stop offending me',
+		    'stop tone policing me',
+		    'what the fuck do you have against {awesomeStuff}',
+		    'what the fuck has {subject} ever done to you',
 		    'why the FUCK should i respect your {description} opinion',
-		    'you are perpetuating {terribleStuff} you {fullInsult}',
+		    'you are perpetuating {terribleStuff}',
 		    'you are the worst person alive',
-		    'you are triggering me you {fullInsult}',
+		    'you are triggering me',
 		    'you are worse than hitler',
 		    'you make me sick',
 		    'you should be ashamed of yourself',
 		    'your {terribleStuff} keeps me from having any {description} rights',
-		    '{fullInsult}',
 	    ],
 	    emoji: [
 		    '(◕﹏◕✿)',
@@ -294,6 +295,8 @@ var generateSentence,
 			        'aligned',
 			        'identifying',
 			        'type',
+			        'oppressed',
+			        'marginalized',
 		        ],
 		        postfixes = [
 			        'individuals',
@@ -380,7 +383,7 @@ generateSentence = function () {
 	var sentence = tumblrTerm('sentence'),
 	    verb = tumblrTerm('verb')
 
-	return sentence.format.replace(/{verb}/gi, verb[sentence.forms.random()]) + sentence.type.randomRepeat(10)
+	return sentence.format.replace(/{verb}/gi, verb[sentence.forms.random()]) + (randomBoolean() ? ' you ' + tumblrTerm('fullInsult') : '') + sentence.type.randomRepeat(10)
 }
 
 generateInsult = function (initial, tumblrize) {
@@ -430,7 +433,7 @@ generateParagraph = function (tumblrize) {
 			sentence = [
 				generateInsult(false) + '!'.randomRepeat(10),
 				generateSentence(),
-				tumblrTerm('statement') + '!'.randomRepeat(10),
+				tumblrTerm('statement') + (randomBoolean() ? ' you ' + tumblrTerm('fullInsult') : '') + '!'.randomRepeat(10),
 			].random().trim()
 		}
 
@@ -455,7 +458,7 @@ generateParagraph = function (tumblrize) {
 	paragraph = paragraph.join(' ') + '!'.randomRepeat(10)
 
 	if (randomBoolean()) {
-		paragraph += ' ' + tumblrTerm('conclusion') + ' ' + replaceTerms(tumblrTerm('insult')).toUpperCase() + '!'.randomRepeat(10)
+		paragraph += ' ' + tumblrTerm('conclusion') + ' ' + replaceTerms(tumblrTerm('insult') + (randomBoolean() ? ' you ' + tumblrTerm('fullInsult') : '')).toUpperCase() + '!'.randomRepeat(10)
 	}
 
 	return paragraph.trim()
