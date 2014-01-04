@@ -81,16 +81,16 @@ var generateSentence,
 	    'bi', 'bigender', 'black', 'celestial', 'chubby', 'closet',
 	    'color', 'curvy', 'dandy', 'deathfat', 'demi', 'differently abled',
 	    'disabled', 'diversity', 'dysphoria', 'estrogen-affinity', 'ethnic',
-	    'ethnicity', 'fat love', 'fat', 'fatist', 'fatty', 'female',
-	    'feminist', 'genderfuck', 'genderless', 'body hair', 'height',
+	    'ethnicity', 'fat love', 'fat', 'fatty', 'female',
+	    'genderfuck', 'genderless', 'body hair', 'height',
 	    'indigenous', 'intersectionality', 'intersexual', 'invisible', 'kin',
-	    'lesbianism', 'little person', 'marginalized', 'minority',
+	    'little person', 'marginalized', 'minority',
 	    'multigender', 'non-gender', 'non-white', 'obesity', 'otherkin', 'omnisexual',
 	    'pansexual', 'polygender', 'polyspecies', 'privilege', 'prosthetic', 'queer',
 	    'radfem', 'skinny', 'smallfat', 'stretchmark', 'thin',
 	    'third-gender', 'trans*', 'transethnic', 'transgender', 'transman',
 	    'transwoman', 'trigger', 'two-spirit', 'womyn', 'wymyn', 'saami', 'native american',
-	    'hijra', 'freeganist', 'transnormative', 'LGBTQIA+',
+	    'hijra', 'transnormative', 'LGBTQIA+',
 	    'cross-dresser', 'androphilia', 'gynephilia', 'PoC', 'WoC',
     ],
     marginalizedAdverbs = [
@@ -115,10 +115,17 @@ var generateSentence,
 	    'close-minded',
 	    'antediluvian',
     ],
+    marginalizedIsms = [
+	    'feminist',
+	    'fatist',
+	    'racist',
+	    'lesbianist',
+	    'freeganist',
+    ],
     privilegedNouns = [
 	    'able-body',
-	    'appearance',
-	    'attractive',
+	    //'appearance',
+	    //'attractive',
 	    'binary',
 	    'cis',
 	    'cisgender',
@@ -192,6 +199,18 @@ var generateSentence,
 
 	    return result
     })(),
+    otherAwesomeStuff = [
+	    'gender abolition',
+	    'female superiority',
+    ],
+    otherTerribleStuff = [
+	    'internalized misogynism',
+	    'internalized patriarchy',
+	    'male domination',
+	    'gender roles',
+	    'rape culture',
+	    'institutionalized racism',
+    ],
     randomPrivilege = function () {
 	    return privilegedNouns.random()
     },
@@ -201,45 +220,58 @@ var generateSentence,
 	    }
 	    return insultNouns.random()
     },
+    randomAwesomeStuff = function () {
+	    return otherAwesomeStuff.random()
+    },
+    randomTerribleStuff = function () {
+	    return otherTerribleStuff.random()
+    },
     verbs = [
-	    ['deny', 'denies', 'denying', 'denied'],
-	    ['discriminate', 'discriminates', 'discriminating', 'discriminated'],
-	    ['sexualize', 'sexualizes', 'sexualizing', 'sexualized'],
-	    ['hypersexualize', 'hypersexualizes', 'hypersexualizing', 'hypersexualized'],
-	    ['oppress', 'oppresses', 'oppressing', 'oppressed'],
-	    ['shame', 'shames', 'shaming', 'shamed'],
+	    ['deny', 'denying', 'denial'],
+	    ['discriminate', 'discriminating', 'discrimination'],
+	    ['sexualize', 'sexualizing', 'sexualization'],
+	    ['hypersexualize', 'hypersexualizing', 'hypersexualization'],
+	    ['oppress', 'oppressing', 'oppression'],
+	    ['shame', 'shaming', 'shaming'],
+	    ['marginalize', 'marginalizing', 'marginalization'],
+	    ['objectify', 'objectifying', 'objectification'],
+	    ['attack', 'attacking', 'attacking'],
+	    ['ignore', 'ignoring', 'ignoring'],
     ],
     sentences = [
-	    { forms: [2], format: 'you %insult, stop %verb %marginalize %person', type: '!', },
-	    { forms: [2], format: 'you are a %marginalize %verb %insult', type: '!', },
-	    { forms: [2], format: 'you should stop fucking %verb %marginalize %person', type: '!', },
-	    { forms: [0], format: 'why the fuck do you feel the need to %verb %marginalize %person you %insult', type: '?', },
-	    { forms: [0], format: 'leave %marginalize %person the fuck alone you %insult', type: '!', },
-	    { forms: [2], format: 'stop fucking %verb %marginalize %person you %insult', type: '!', },
+	    { forms: [1], format: 'you %insult, stop %verb %marginalized-%person', type: '!', },
+	    { forms: [1], format: 'you are a %marginalized-%verb %insult', type: '!', },
+	    { forms: [1], format: 'you should stop fucking %verb %marginalized-%person', type: '!', },
+	    { forms: [0], format: 'why the fuck do you feel the need to %verb %marginalized-%person you %insult', type: '?', },
+	    { forms: [0], format: 'leave %marginalized-%person the fuck alone you %insult', type: '!', },
+	    { forms: [1], format: 'stop fucking %verb %marginalized-%person you %insult', type: '!', },
 	    { forms: [0], format: 'what the fuck has %subject ever done to you you %insult', type: '!', },
+	    { forms: [2], format: 'your %verb of %marginalized-%person is problematic', type: '!', },
     ],
     subjects = [
-	    { names: ['s/he', 'he/she', 'xe', 'ze'], be: 'is', singular: 1 },
+	    { names: ['xe', 'ze'] },
     ],
     intros = [
 	    'wow. just. wow.',
 	    'no. just. no.',
-	    'this. is. NOT. okay!',
+	    'this. is. NOT. okay.',
 	    'just a friendly reminder:',
+	    '[TW: rant]',
     ],
     statements = [
 	    'you should be ashamed of yourself',
 	    'you make me sick',
 	    '%insult',
+	    'die in a fire',
 	    'stop offending me you %insult',
 	    'you are the worst person alive',
-	    'people like you should die',
-	    'what the fuck do you have against gender abolition',
+	    'people like you deserve to die',
+	    'what the fuck do you have against %awesomestuff you %insult',
 	    'you are worse than hitler',
 	    'it\'s not my job to educate you you %insult',
-	    'fuck your internalized misogyny',
-	    'you\'re perpetuating rape culture you %insult',
-	    'you\'re triggering me you %insult',
+	    'fuck your %terriblestuff',
+	    'you are perpetuating %terriblestuff you %insult',
+	    'you are triggering me you %insult',
 	    'stop tone policing me you %insult',
 	    'i hope you fucking die you %insult',
     ],
@@ -260,10 +292,10 @@ generateSentence = function () {
 	    verb = verbs[index],
 	    str = sentence.format
 
-	str = str.replace(/%subject/gi, subject.names.random()).replace('%be', subject.be)
+	str = str.replace(/%subject/gi, subject.names.random())
 	str = str.replace(/%verb/gi, verb[sentence.forms.random()])
-	str = str.replace(/%marginalize/gi, marginalizedNouns.random())
-	str = str.replace(/%person/gi, ['identifying', 'aligned'].random() + ' ' + ['people', 'personalities'].random())
+	str = str.replace(/%marginalized/gi, marginalizedNouns.random())
+	str = str.replace(/%person/gi, ['identifying', 'aligned'].random() + ' ' + ['people', 'personalities', 'individuals'].random())
 	str += sentence.type.randomRepeat(10)
 
 	return str
@@ -280,7 +312,7 @@ generateInsult = function (initial) {
 			result += insultAdverbs.random() + ' '
 		}
 		if (randomBoolean()) {
-			result += marginalizedNouns.random() + '-' + marginalizedAdverbs.random() + ', '
+			result += (randomBoolean() ? marginalizedIsms.random() : marginalizedNouns.random()) + '-' + marginalizedAdverbs.random() + ', '
 		}
 	}
 	else {
@@ -296,8 +328,6 @@ generateInsult = function (initial) {
 		result += privilegedIsms.random() + ' '
 	}
 
-	result = result.replace(/%privilege/gi, randomPrivilege)
-
 	return result.trim()
 }
 
@@ -312,7 +342,7 @@ generateParagraph = function (onlyInsult) {
 
 	for (i = 0; i < length; i += 1) {
 		if (i === 0) {
-			if (randomBoolean() && !onlyInsult) {
+			if (Math.random() > 0.3 && !onlyInsult) {
 				sentence += intros.random() + ' '
 			}
 
@@ -332,6 +362,8 @@ generateParagraph = function (onlyInsult) {
 
 		sentence = sentence.replace(/%privilege/gi, randomPrivilege)
 		sentence = sentence.replace(/%insult/gi, randomInsult)
+		sentence = sentence.replace(/%terriblestuff/gi, randomTerribleStuff)
+		sentence = sentence.replace(/%awesomestuff/gi, randomAwesomeStuff)
 
 		// Randomly make stuff literal
 		sentence = sentence.replace(/you are/g, function () {
