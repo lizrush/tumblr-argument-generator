@@ -232,7 +232,7 @@ var generateSentence,
 		    { forms: [1], format: 'stop fucking {verb} {marginalizedNoun}-{personality}', type: '!', },
 		    { forms: [1], format: 'you are a {marginalizedNoun}-{verb} {fullInsult}', type: '!', },
 		    { forms: [1], format: 'you should stop fucking {verb} {marginalizedNoun}-{personality}', type: '!', },
-		    { forms: [1], format: 'you {fullInsult}, stop {verb} {marginalizedNoun}-{personality}', type: '!', },
+		    { forms: [1], format: 'stop {verb} {marginalizedNoun}-{personality}', type: '!', },
 		    { forms: [2], format: 'your {verb} of {marginalizedNoun}-{personality} is problematic', type: '!', },
 	    ],
 	    subject: [
