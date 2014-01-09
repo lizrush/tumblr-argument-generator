@@ -473,9 +473,9 @@ generateParagraph = function (tumblrize) {
 		})
 
 		if (tumblrize) {
-			sentence = tumblrizeText(sentence, randomBoolean())
+			sentence = tumblrizeText(sentence, Math.random() > 0.4)
 		}
-		else if (Math.random() > 0.3) {
+		else if (Math.random() > 0.4) {
 			// Randomly uppercase sentences
 			sentence = sentence.toUpperCase()
 		}
