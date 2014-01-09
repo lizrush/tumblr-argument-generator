@@ -381,10 +381,8 @@ tumblrizeText = function (text, uppercase) {
 	}
 
 	// Randomly lowercase first characters
-	if (Math.random() > 0.2) {
-		randomPoint = Math.floor(Math.random() * (text.length / 3))
-		text = text.slice(0, randomPoint).toLowerCase() + text.slice(randomPoint, text.length)
-	}
+	randomPoint = Math.floor(Math.random() * (text.length / 3))
+	text = text.slice(0, randomPoint).toLowerCase() + text.slice(randomPoint, text.length)
 
 	// Add emoji faces
 	if (Math.random() > 0.8) {
