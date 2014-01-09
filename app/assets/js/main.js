@@ -634,7 +634,7 @@ generateParagraph = function (tumblrize, minLength, maxRandom) {
 }
 
 generateUsername = function() {
-	return (tumblrTerm('marginalizedNoun') + tumblrTerm('marginalizedNoun')).toLowerCase().replace(/\s/g, '')
+	return (tumblrTerm('marginalizedNoun') + tumblrTerm('marginalizedNoun')).toLowerCase().replace(/[^a-z]/g, '')
 }
 
 $(document).ready(function () {

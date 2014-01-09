@@ -25,10 +25,11 @@ strong
 #contents
 	background: rgba(#fff, .7)
 	margin: 30px auto
-	padding: 30px
+	padding: 30px 30px 10px 30px
 	text-align: center
 	max-width: 900px
 	box-shadow: 0 10px 40px rgba(#000, .1)
+	border-radius: 5px
 
 body.tumblrized
 	#contents
@@ -73,12 +74,12 @@ body.tumblrized
 		padding: 15px 50px
 		margin: 0 10px
 		transition: all .1s linear
+		&:hover
+			background: linear-gradient(top, darken(#fff, 3), darken(#eee, 3))
+			opacity: 1 !important
 		&:active
 			background: linear-gradient(top, #ddd, #eee)
 			border-color: #aaa #ccc #ccc #aaa
-		&:hover
-			background: linear-gradient(top, #eee, #ddd)
-			opacity: 1 !important
 		&.tumblrize-grammar
 			padding: 10px 30px
 			opacity: .4
