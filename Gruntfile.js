@@ -47,11 +47,21 @@ module.exports = function (grunt) {
 				}],
 			},
 		},
+		sync: {
+			all: {
+				files: [{
+					cwd: 'app/assets',
+					src: '{font,img,etc}/**',
+					dest: 'webroot/static/',
+				}],
+			},
+		},
 	})
 
 	grunt.registerTask('production', [
 		'jade:production',
 		'uglify:production',
 		'stylus:production',
+		'sync',
 	])
 }

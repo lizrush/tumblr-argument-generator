@@ -433,7 +433,20 @@ var generateInsult,
 
 		    return result
 	    })(),
-    }
+    },
+    backgroundImages = [
+	    '1.gif',
+	    '5.gif',
+	    '1.jpg',
+	    '2.jpg',
+	    '3.jpg',
+	    '4.jpg',
+	    '5.jpg',
+	    '6.jpg',
+	    '7.jpg',
+	    '8.jpg',
+	    '9.jpg',
+    ]
 
 replaceTerms = function (text) {
 	return text.replace(/\{([a-z]+)\}/gi, function (m, p1) {
@@ -618,14 +631,37 @@ generateParagraph = function (tumblrize) {
 }
 
 $(document).ready(function () {
+	var currentBackgroundImage = backgroundImages.random()
+
+	// Randomly switch background now and then
+	window.setInterval(function () { currentBackgroundImage = backgroundImages.random() }, 4000)
+
 	$('#argument')
 		.removeClass('loading')
 		.text(generateInsult(true, $('#tumblrize-grammar').prop('checked')).toUpperCase())
 
 	$('.controls button.generate-insult').click(function () {
 		$('#argument').text(generateInsult(true, $('#tumblrize-grammar').prop('checked')).toUpperCase())
+		if ($('#tumblrize-grammar').prop('checked')) {
+			$('body').addClass('tumblrized')
+			if ($('body').css('background-image').indexOf(currentBackgroundImage) === -1) {
+				$('body').css('background-image', 'url(static/img/bg/' + currentBackgroundImage + ')')
+			}
+		}
+		else {
+			$('body').removeClass('tumblrized').css('background-image', 'none')
+		}
 	})
 	$('.controls button.generate-rant').click(function () {
 		$('#argument').text(generateParagraph($('#tumblrize-grammar').prop('checked')))
+		if ($('#tumblrize-grammar').prop('checked')) {
+			$('body').addClass('tumblrized')
+			if ($('body').css('background-image').indexOf(currentBackgroundImage) === -1) {
+				$('body').css('background-image', 'url(static/img/bg/' + currentBackgroundImage + ')')
+			}
+		}
+		else {
+			$('body').removeClass('tumblrized').css('background-image', 'none')
+		}
 	})
 })
