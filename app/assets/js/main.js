@@ -261,7 +261,7 @@ var generateSentence,
 		    'oh. my. god.',
 		    'this. is. NOT. okay.',
 		    'wow. just. wow.',
-		    'can we talk about this?'
+		    'can we talk about this?',
 		    'i\'m going to get hate for this but',
 	    ],
 	    statement: [
