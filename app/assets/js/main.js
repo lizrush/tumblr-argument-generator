@@ -630,6 +630,25 @@ generateParagraph = function (tumblrize) {
 	return paragraph.trim()
 }
 
+generateUsername = function() {
+	return (tumblrTerm('marginalizedNoun') + tumblrTerm('marginalizedNoun')).toLowerCase()
+}
+
+function renderWar() {
+	var tumblrize = $('#tumblrize-grammar').prop('checked')
+	var numReplies = $('#num-replies').val()
+	var war = $('<p/>').text(generateParagraph(tumblrize))
+
+	for (var i = 0; i < numReplies; i++) {
+		var username = $('<p/>').text(generateUsername() + ':');
+		var blockquote = $('<blockquote/>').append(war)
+		var reply = $('<p/>').text(generateInsult(true, tumblrize).toUpperCase())
+		war = $('<div/>').append(username).append(blockquote).append(reply);
+	};
+
+	$('#argument').empty().append(war)
+}
+
 $(document).ready(function () {
 	var currentBackgroundImage = backgroundImages.random()
 
@@ -640,24 +659,12 @@ $(document).ready(function () {
 	$('.privileged-groups-length').text(' ' + (tumblrDictionary.privilegedAdjective.length * tumblrDictionary.privilegedNoun.length) + ' ')
 	$('.marginalized-groups-length').text(' ' + (tumblrDictionary.marginalizedNoun.length * tumblrDictionary.verb.length) + ' ')
 
-	$('#argument')
-		.removeClass('loading')
-		.text(generateInsult(true, $('#tumblrize-grammar').prop('checked')).toUpperCase())
+	$('#argument').removeClass('loading')
+	renderWar()
 
-	$('.controls button.generate-insult').click(function () {
-		$('#argument').text(generateInsult(true, $('#tumblrize-grammar').prop('checked')).toUpperCase())
-		if ($('#tumblrize-grammar').prop('checked')) {
-			$('body').addClass('tumblrized')
-			if ($('body').css('background-image').indexOf(currentBackgroundImage) === -1) {
-				$('body').css('background-image', 'url(static/img/bg/' + currentBackgroundImage + ')')
-			}
-		}
-		else {
-			$('body').removeClass('tumblrized').css('background-image', 'none')
-		}
-	})
-	$('.controls button.generate-rant').click(function () {
-		$('#argument').text(generateParagraph($('#tumblrize-grammar').prop('checked')))
+	$('.controls button.generate-war').click(function () {
+		renderWar()
+
 		if ($('#tumblrize-grammar').prop('checked')) {
 			$('body').addClass('tumblrized')
 			if ($('body').css('background-image').indexOf(currentBackgroundImage) === -1) {

@@ -21,8 +21,9 @@ html(lang='en')
 			p#argument.loading Loading argument...
 
 			.controls
-				button.generate-insult Generate tumblr insult
-				button.generate-rant Generate tumblr rant
+				button.generate-war Generate tumblr war
+				input(type='number', min='0', step='1', id='num-replies', value='2')
+				label(for='num') replies
 
 			.controls
 				label(for='tumblrize-grammar')
