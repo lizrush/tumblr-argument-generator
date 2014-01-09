@@ -596,10 +596,12 @@ generateParagraph = function (tumblrize) {
 
 	for (i = 0, sentence = ''; i < length; i += 1) {
 		if (i === 0) {
-			sentence += tumblrTerm('intro') + ' '
+			sentence = tumblrTerm('intro') + ' '
+		}
+		else {
+			sentence = sentenceGenerators.random()().trim()
 		}
 
-		sentence = sentenceGenerators.random()().trim()
 		sentence = replaceTerms(sentence)
 
 		// Randomly make stuff literal
@@ -616,10 +618,10 @@ generateParagraph = function (tumblrize) {
 		paragraph.push(sentence)
 	}
 
-	paragraph = paragraph.join(' ') + '!'
+	paragraph = paragraph.join(' ')
 
 	if (Math.random() > 0.5) {
-		paragraph += ' ' + tumblrTerm('conclusion') + ' ' + replaceTerms(tumblrTerm('insult') + (Math.random() > 0.5 ? ' you ' + tumblrTerm('fullInsult') : '')).toUpperCase()
+		paragraph += ' ' + tumblrTerm('conclusion') + ' ' + replaceTerms(tumblrTerm('insult') + (Math.random() > 0.5 ? ' you ' + tumblrTerm('fullInsult') : '')).toUpperCase() + '!'
 	}
 
 	// Randomly repeat punctuation
