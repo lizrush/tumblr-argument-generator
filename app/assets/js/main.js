@@ -349,7 +349,7 @@ replaceTerms = function (text) {
 }
 
 tumblrizeText = function (text, uppercase) {
-	var wrap
+	var wrap, randomPoint
 
 	// Randomly add out-of-place commas
 	text = text.replace(/\b /g, function () {
@@ -370,18 +370,22 @@ tumblrizeText = function (text, uppercase) {
 	text = text.replace(/you/g, 'u')
 	text = text.replace(/people/g, 'ppl')
 	text = text.replace(/please/g, 'plz')
-	text = text.replace(/e([dr])\b/g, function (m, p1) {
-		return (Math.random() > 0.4 ? 'e' + p1 : p1)
+	text = text.replace(/([^e])e([dr])\b/g, function (m, p1, p2) {
+		return (Math.random() > 0.4 ? p1 + 'e' + p2 : p1 + p2)
 	})
+
+	// Remove apostrophes
+	text = text.replace(/'/g, '')
 
 	if (uppercase) {
 		text = text.toUpperCase()
 	}
 
 	// Randomly lowercase first characters
-	text = text.replace(/^(\w)/g, function (m, p1) {
-		return Math.random() > 0.3 ? p1 : p1.toLowerCase()
-	})
+	if (Math.random() > 0.2) {
+		randomPoint = Math.floor(Math.random() * (text.length / 3))
+		text = text.slice(0, randomPoint).toLowerCase() + text.slice(randomPoint, text.length)
+	}
 
 	// Add emoji faces
 	if (Math.random() > 0.8) {
@@ -451,10 +455,7 @@ generateParagraph = function (tumblrize) {
 
 	for (i = 0, sentence = ''; i < length; i += 1) {
 		if (i === 0) {
-			if (Math.random() > 0.3) {
-				sentence += tumblrTerm('intro') + ' '
-			}
-
+			sentence += tumblrTerm('intro') + ' '
 			sentence += generateInsult(true) + '!'.randomRepeat(10)
 		}
 		else {
@@ -475,7 +476,7 @@ generateParagraph = function (tumblrize) {
 		if (tumblrize) {
 			sentence = tumblrizeText(sentence, randomBoolean())
 		}
-		else if (randomBoolean()) {
+		else if (Math.random() > 0.3) {
 			// Randomly uppercase sentences
 			sentence = sentence.toUpperCase()
 		}
