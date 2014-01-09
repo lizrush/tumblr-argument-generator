@@ -28,6 +28,7 @@ var generateInsult,
 		    'fuck off',
 		    'fuck you',
 		    'go drown in your own piss',
+		    'go fuck yourself',
 		    'go play in traffic',
 		    'kill yourself',
 		    'light yourself on fire',
@@ -57,7 +58,6 @@ var generateInsult,
 		    'oppressive',
 		    'pathetic',
 		    'patriarchal',
-		    'phobic',
 		    'racist',
 		    'rape-culture-supporting',
 		    'sexist',
@@ -66,20 +66,31 @@ var generateInsult,
 	    insultNoun: [
 		    'MRA',
 		    'TERF',
+		    'ableist',
+		    'ageist',
+		    'anti-feminist',
 		    'asshole',
+		    'assimilationist',
 		    'basement dweller',
 		    'bigot',
 		    'brogrammer',
+		    'chauvinist',
+		    'classist',
 		    'creep',
 		    'dudebro',
+		    'essentialist',
 		    'fascist',
 		    'feminazi',
 		    'femscum',
 		    'hitler',
+		    'kyriarchist',
 		    'lowlife',
+		    'misogynist',
+		    'mouthbreather',
 		    'nazi',
 		    'neckbeard',
 		    'oppressor',
+		    'patriarchist',
 		    'pedophile',
 		    'piece of shit',
 		    'radscum',
@@ -87,7 +98,9 @@ var generateInsult,
 		    'rapist',
 		    'redditor',
 		    'scum',
+		    'sexist',
 		    'subhuman',
+		    'transmisogynist',
 		    'virgin',
 	    ],
 	    fullInsult: function () {
@@ -126,9 +139,12 @@ var generateInsult,
 		    'fandom',
 		    'fat love',
 		    'fat',
+		    'fatist',
 		    'fatty',
 		    'female',
 		    'feminist',
+		    'feminist',
+		    'freeganist',
 		    'furry',
 		    'genderless',
 		    'gynephilia',
@@ -141,6 +157,7 @@ var generateInsult,
 		    'invisible',
 		    'kin',
 		    'latin@',
+		    'lesbianist',
 		    'little person',
 		    'marginalized',
 		    'minority',
@@ -218,18 +235,13 @@ var generateInsult,
 
 		    return result
 	    })()),
-	    marginalizedIsm: [
-		    'fatist',
-		    'feminist',
-		    'freeganist',
-		    'lesbianist',
-	    ],
 	    privilegedNoun: [
 		    'able-body',
 		    'binary',
 		    'cis',
 		    'cisgender',
 		    'cishet',
+		    'gender',
 		    'hetero',
 		    'male',
 		    'middle-class',
@@ -243,21 +255,6 @@ var generateInsult,
 		    'elitist',
 		    'overprivileged',
 		    'privileged',
-	    ],
-	    privilegedIsm: [
-		    'ableist',
-		    'ageist',
-		    'anti-feminist',
-		    'assimilationist',
-		    'chauvinist',
-		    'classist',
-		    'essentialist',
-		    'kyriarchist',
-		    'misogynist',
-		    'nazi',
-		    'patriarchist',
-		    'sexist',
-		    'transmisogynist',
 	    ],
 	    awesomeStuff: [
 		    'bodily integrity',
@@ -365,7 +362,7 @@ var generateInsult,
 		    'it is not my job to educate you!',
 		    'leave {marginalizedNoun}-{personality} the fuck alone!',
 		    'my pronoun is "{subject}"!',
-		    'no one cares about your {description} {privilegedNoun} opinion!',
+		    'no one cares about your {description} {insultNoun} {privilegedNoun} opinion!',
 		    'oh my god!',
 		    'omg.',
 		    'people like you deserve to die!',
@@ -373,7 +370,7 @@ var generateInsult,
 		    'stop tone policing me!',
 		    'what the fuck do you have against {awesomeStuff}?',
 		    'what the fuck has {subject} ever done to you?',
-		    'why the FUCK should i respect your {description} opinion?',
+		    'why the FUCK should i respect your {description} {insultNoun} opinion?',
 		    'you are making me cry!',
 		    'you are perpetuating {terribleStuff}!',
 		    'you are the worst person alive!',
@@ -559,13 +556,7 @@ generateInsult = function (initial, tumblrize) {
 			insult += tumblrTerm('insultAdjective') + ' '
 		}
 		if (Math.random() > 0.3) {
-			if (Math.random() > 0.5) {
-				insult += tumblrTerm('marginalizedIsm')
-			}
-			else {
-				insult += tumblrTerm('marginalizedNoun')
-			}
-
+			insult += tumblrTerm('marginalizedNoun')
 			insult += '-' + tumblrTerm('verb')[1] + ', '
 		}
 	}
@@ -574,7 +565,7 @@ generateInsult = function (initial, tumblrize) {
 	}
 
 	insult += tumblrTerm('privilegedNoun') + '-' + tumblrTerm('privilegedAdjective') + ' '
-	insult += [tumblrTerm('insultNoun'), tumblrTerm('privilegedIsm')].random() + ' '
+	insult += tumblrTerm('insultNoun') + ' '
 
 	insult = replaceTerms(insult)
 
