@@ -323,8 +323,6 @@ var generateSentence,
 			        'aligned',
 			        'identifying',
 			        'type',
-			        'oppressed',
-			        'marginalized',
 		        ],
 		        postfixes = [
 			        'individuals',
