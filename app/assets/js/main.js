@@ -3,14 +3,14 @@ Array.prototype.random = function () {
 }
 
 String.prototype.randomRepeat = function (len) {
-	return this + (new Array(Math.floor(Math.random() * (len - 1)))).join(this)
+	return (new Array(Math.floor(2 + (Math.random() * (len - 1))))).join(this)
 }
 
-var generateSentence,
-    generateInsult,
+var generateInsult,
     generateParagraph,
     replaceTerms,
-    randomBoolean,
+    literalize,
+    weightedArray,
     tumblrizeText,
     tumblrTerm,
     tumblrDictionary = {
@@ -79,10 +79,7 @@ var generateSentence,
 		    'virgin',
 	    ],
 	    fullInsult: function () {
-		    return [
-			    tumblrTerm('insultAdverb') + ' ' + tumblrTerm('insultNoun'),
-			    tumblrTerm('insultNoun'),
-		    ].random()
+		    return (Math.random() > 0.3 ? tumblrTerm('insultAdverb') + ' ' : '') + tumblrTerm('insultNoun')
 	    },
 	    marginalizedNoun: [
 		    'CAFAB',
@@ -324,6 +321,14 @@ var generateSentence,
 		    { forms: [2], format: 'fuck your {verb} of {marginalizedNoun}-{personality}!' },
 		    { forms: [2], format: 'your {verb} of {marginalizedNoun}-{personality} is problematic!' },
 	    ],
+	    fullSentence: function () {
+		    var rawSentence = tumblrTerm('sentence'),
+		        sentence = rawSentence.format.slice(0, -1),
+		        punctuation = rawSentence.format.slice(-1),
+		        verb = tumblrTerm('verb')
+
+		    return sentence.replace(/{verb}/gi, verb[rawSentence.forms.random()]) + (Math.random() > 0.4 ? ' you ' + tumblrTerm('fullInsult') : '') + punctuation
+	    },
 	    subject: [
 		    'they',
 		    'xe',
@@ -385,7 +390,7 @@ var generateSentence,
 		        statement = rawStatement.slice(0, -1),
 		        punctuation = rawStatement.slice(-1)
 
-		    return statement + (randomBoolean() && punctuation !== '.' ? ' you ' + tumblrTerm('fullInsult') : '') + punctuation.randomRepeat(10)
+		    return statement + (Math.random() > 0.5 && punctuation !== '.' ? ' you ' + tumblrTerm('fullInsult') : '') + punctuation
 	    },
 	    emoji: [
 		    '(◕﹏◕✿)',
@@ -436,10 +441,32 @@ replaceTerms = function (text) {
 	})
 }
 
+literalize = function (text) {
+	text = text.replace(/you are/g, function () {
+		return (Math.random() > 0.2 ? 'you\'re literally' : 'you\'re')
+	})
+	text = text.replace(/i am/g, function () {
+		return (Math.random() > 0.2 ? 'i\'m literally' : 'i\'m')
+	})
+	text = text.replace(/ will/g, function () {
+		return (Math.random() > 0.2 ? '\'ll literally' : '\'ll')
+	})
+	text = text.replace(/it is/g, function () {
+		return (Math.random() > 0.2 ? 'it\'s literally' : 'it\'s')
+	})
+
+	return text
+}
+
 tumblrizeText = function (text, uppercase) {
 	var wrap, randomPoint
 
-	// Randomly add out-of-place commas
+	// Randomly remove existing commas
+	text = text.replace(/,/g, function () {
+		return Math.random() > 0.3 ? '' : ','
+	})
+
+	// Randomly add out-of-place punctuation
 	text = text.replace(/\b /g, function () {
 		return Math.random() > 0.05 ? ' ' : [',', '.'].random().randomRepeat(4)
 	})
@@ -462,7 +489,7 @@ tumblrizeText = function (text, uppercase) {
 		return (Math.random() > 0.4 ? p1 + 'e' + p2 : p1 + p2)
 	})
 
-	// Remove apostrophes
+	// Remove all apostrophes
 	text = text.replace(/'/g, '')
 
 	if (uppercase) {
@@ -493,15 +520,19 @@ tumblrTerm = function (type) {
 	return ret.random()
 }
 
-randomBoolean = function () {
-	return Math.round(Math.random()) === 1
-}
+weightedArray = function (array, weights) {
+	var ret = [],
+	    i, j, multiples
 
-generateSentence = function () {
-	var sentence = tumblrTerm('sentence'),
-	    verb = tumblrTerm('verb')
+	for (i = 0; i < weights.length; i += 1) {
+		multiples = weights[i] * 10
 
-	return sentence.format.replace(/{verb}/gi, verb[sentence.forms.random()]) + (randomBoolean() ? ' you ' + tumblrTerm('fullInsult') : '') + sentence.type.randomRepeat(10)
+		for (j = 0; j < multiples; j += 1) {
+			ret.push(array[i])
+		}
+	}
+
+	return ret
 }
 
 generateInsult = function (initial, tumblrize) {
@@ -537,27 +568,29 @@ generateInsult = function (initial, tumblrize) {
 generateParagraph = function (tumblrize) {
 	var paragraph = [],
 	    length = 3 + Math.random() * 7,
+	    sentenceGenerators = weightedArray([
+		    function () { return generateInsult(false) + '!' },
+		    function () { return generateInsult(true) + '!' },
+		    function () { return tumblrTerm('fullSentence') },
+		    function () { return tumblrTerm('fullStatement') },
+	    ], [
+		    0.1,
+		    0.1,
+		    0.4,
+		    0.4,
+	    ]),
 	    sentence, i
 
 	for (i = 0, sentence = ''; i < length; i += 1) {
 		if (i === 0) {
 			sentence += tumblrTerm('intro') + ' '
-			sentence += generateInsult(true) + '!'.randomRepeat(10)
-		}
-		else {
-			sentence = [
-				generateInsult(false) + '!'.randomRepeat(10),
-				generateSentence(),
-				tumblrTerm('fullStatement'),
-			].random().trim()
 		}
 
+		sentence = sentenceGenerators.random()().trim()
 		sentence = replaceTerms(sentence)
 
 		// Randomly make stuff literal
-		sentence = sentence.replace(/you are/g, function () {
-			return (Math.random() > 0.2 ? 'you\'re literally' : 'you\'re')
-		})
+		sentence = literalize(sentence)
 
 		if (tumblrize) {
 			sentence = tumblrizeText(sentence, Math.random() > 0.4)
@@ -570,11 +603,16 @@ generateParagraph = function (tumblrize) {
 		paragraph.push(sentence)
 	}
 
-	paragraph = paragraph.join(' ') + '!'.randomRepeat(10)
+	paragraph = paragraph.join(' ') + '!'
 
-	if (randomBoolean()) {
-		paragraph += ' ' + tumblrTerm('conclusion') + ' ' + replaceTerms(tumblrTerm('insult') + (randomBoolean() ? ' you ' + tumblrTerm('fullInsult') : '')).toUpperCase() + '!'.randomRepeat(10)
+	if (Math.random() > 0.5) {
+		paragraph += ' ' + tumblrTerm('conclusion') + ' ' + replaceTerms(tumblrTerm('insult') + (Math.random() > 0.5 ? ' you ' + tumblrTerm('fullInsult') : '')).toUpperCase()
 	}
+
+	// Randomly repeat punctuation
+	paragraph = paragraph.replace(/([\!\?]+)/g, function (m, p1) {
+		return p1.slice(0, 1).randomRepeat(10)
+	})
 
 	return paragraph.trim()
 }
