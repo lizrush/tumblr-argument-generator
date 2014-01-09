@@ -265,6 +265,7 @@ var generateSentence,
 		    'can we talk about this?',
 		    'i\'m going to get hate for this but',
 		    'seriously?',
+		    'omg',
 	    ],
 	    statement: [
 		    'die in a fire!',
@@ -275,6 +276,7 @@ var generateSentence,
 		    'it\'s not my job to educate you!',
 		    'leave {marginalizedNoun}-{personality} the fuck alone!',
 		    'oh my god!',
+		    'omg.',
 		    'people like you deserve to die!',
 		    'stop offending me!',
 		    'stop tone policing me!',
@@ -289,14 +291,15 @@ var generateSentence,
 		    'you should be ashamed of yourself!',
 		    'your {terribleStuff} keeps me from having any {description} rights!',
 		    'i am 100% done.',
-		    'i can\'t even.'
+		    'i can\'t even.',
+		    'you are literally making me cry!',
 	    ],
 	    fullStatement: function () {
 		    var rawStatement = tumblrTerm('statement'),
 		        statement = rawStatement.slice(0, -1),
 		        punctuation = rawStatement.slice(-1)
 
-		    return statement + (randomBoolean() ? ' you ' + tumblrTerm('fullInsult') : '') + punctuation.randomRepeat(10)
+		    return statement + (randomBoolean() && punctuation !== '.' ? ' you ' + tumblrTerm('fullInsult') : '') + punctuation.randomRepeat(10)
 	    },
 	    emoji: [
 		    '(◕﹏◕✿)',
