@@ -8,6 +8,7 @@ String.prototype.randomRepeat = function (len) {
 
 var generateInsult,
     generateParagraph,
+    generateUsername,
     replaceTerms,
     literalize,
     weightedArray,
@@ -576,9 +577,9 @@ generateInsult = function (initial, tumblrize) {
 	return insult.trim()
 }
 
-generateParagraph = function (tumblrize) {
+generateParagraph = function (tumblrize, minLength, maxRandom) {
 	var paragraph = [],
-	    length = 3 + Math.random() * 7,
+	    length = (typeof minLength === 'undefined' ? 3 : minLength) + Math.random() * (typeof maxRandom === 'undefined' ? 7 : maxRandom),
 	    sentenceGenerators = weightedArray([
 		    function () { return generateInsult(false) + '!' },
 		    function () { return generateInsult(true) + '!' },
@@ -631,40 +632,40 @@ generateParagraph = function (tumblrize) {
 }
 
 generateUsername = function() {
-	return (tumblrTerm('marginalizedNoun') + tumblrTerm('marginalizedNoun')).toLowerCase()
-}
-
-function renderWar() {
-	var tumblrize = $('#tumblrize-grammar').prop('checked')
-	var numReplies = $('#num-replies').val()
-	var war = $('<p/>').text(generateParagraph(tumblrize))
-
-	for (var i = 0; i < numReplies; i++) {
-		var username = $('<p/>').text(generateUsername() + ':');
-		var blockquote = $('<blockquote/>').append(war)
-		var reply = $('<p/>').text(generateInsult(true, tumblrize).toUpperCase())
-		war = $('<div/>').append(username).append(blockquote).append(reply);
-	};
-
-	$('#argument').empty().append(war)
+	return (tumblrTerm('marginalizedNoun') + tumblrTerm('marginalizedNoun')).toLowerCase().replace(/\s/g, '')
 }
 
 $(document).ready(function () {
-	var currentBackgroundImage = backgroundImages.random()
+	var currentBackgroundImage = backgroundImages.random(),
+	    renderInsult,
+	    renderWar,
+	    updateBackground
 
-	// Randomly switch background now and then
-	window.setInterval(function () { currentBackgroundImage = backgroundImages.random() }, 4000)
+	renderInsult = function () {
+		var tumblrize = $('#tumblrize-grammar').prop('checked'),
+		    insult = $('<p>').text(generateInsult(true, tumblrize).toUpperCase())
 
-	// Add some stats
-	$('.privileged-groups-length').text(' ' + (tumblrDictionary.privilegedAdjective.length * tumblrDictionary.privilegedNoun.length) + ' ')
-	$('.marginalized-groups-length').text(' ' + (tumblrDictionary.marginalizedNoun.length * tumblrDictionary.verb.length) + ' ')
+		$('#argument').empty().append(insult).attr('class', 'insult')
+	}
 
-	$('#argument').removeClass('loading')
-	renderWar()
+	renderWar = function () {
+		var tumblrize = $('#tumblrize-grammar').prop('checked'),
+		    numReplies = $('#num-replies').val(),
+		    war = $('<p/>').text(generateParagraph(tumblrize)),
+		    i, username, blockquote, reply
 
-	$('.controls button.generate-war').click(function () {
-		renderWar()
+		for (i = 0; i < numReplies; i += 1) {
+			username = $('<p/>').text(generateUsername() + ':').attr('class', 'username')
+			blockquote = $('<blockquote/>').append(war)
+			reply = $('<p/>').text(Math.random() > 0.6 ? generateParagraph(tumblrize, 3, 0) : generateInsult(true, tumblrize).toUpperCase())
 
+			war = $('<div/>').append(username).append(blockquote).append(reply)
+		}
+
+		$('#argument').empty().append(war).attr('class', 'war')
+	}
+
+	updateBackground = function () {
 		if ($('#tumblrize-grammar').prop('checked')) {
 			$('body').addClass('tumblrized')
 			if ($('body').css('background-image').indexOf(currentBackgroundImage) === -1) {
@@ -674,5 +675,25 @@ $(document).ready(function () {
 		else {
 			$('body').removeClass('tumblrized').css('background-image', 'none')
 		}
+	}
+
+	// Randomly switch background now and then
+	window.setInterval(function () { currentBackgroundImage = backgroundImages.random() }, 4000)
+
+	// Add some stats
+	$('.privileged-groups-length').text(' ' + (tumblrDictionary.privilegedAdjective.length * tumblrDictionary.privilegedNoun.length) + ' ')
+	$('.marginalized-groups-length').text(' ' + (tumblrDictionary.marginalizedNoun.length * tumblrDictionary.verb.length) + ' ')
+
+	$('#argument').removeClass('loading')
+
+	renderWar()
+
+	$('.controls button.generate-insult').click(function () {
+		renderInsult()
+		updateBackground()
+	})
+	$('.controls button.generate-war').click(function () {
+		renderWar()
+		updateBackground()
 	})
 })
