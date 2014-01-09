@@ -636,6 +636,10 @@ $(document).ready(function () {
 	// Randomly switch background now and then
 	window.setInterval(function () { currentBackgroundImage = backgroundImages.random() }, 4000)
 
+	// Add some stats
+	$('.privileged-groups-length').text(' ' + (tumblrDictionary.privilegedAdjective.length * tumblrDictionary.privilegedNoun.length) + ' ')
+	$('.marginalized-groups-length').text(' ' + (tumblrDictionary.marginalizedNoun.length * tumblrDictionary.verb.length) + ' ')
+
 	$('#argument')
 		.removeClass('loading')
 		.text(generateInsult(true, $('#tumblrize-grammar').prop('checked')).toUpperCase())
