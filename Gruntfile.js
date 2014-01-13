@@ -76,5 +76,11 @@ module.exports = function (grunt) {
 		'uglify:production',
 		'stylus:production',
 		'sync',
+	]);
+
+		grunt.registerTask('staging', [
+		'jade:production',
+		'stylus:production',
+		'sync',
 	])
 }
