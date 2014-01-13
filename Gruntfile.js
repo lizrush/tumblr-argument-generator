@@ -20,10 +20,22 @@ module.exports = function (grunt) {
 				}],
 			},
 		},
+		concat: {
+			production: {
+				src: [
+					'app/assets/js/header.js',
+					'app/assets/js/utils.js',
+					'app/assets/js/generators.js',
+					'app/assets/js/resources/*.js',
+					'app/assets/js/main.js',
+				],
+				dest: 'app/assets/js/merged.js',
+			},
+		},
 		uglify: {
 			production: {
 				files: {
-					'webroot/static/js/main.js': 'app/assets/js/main.js',
+					'webroot/static/js/main.js': 'app/assets/js/merged.js',
 				},
 			},
 		},
@@ -60,6 +72,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('production', [
 		'jade:production',
+		'concat:production',
 		'uglify:production',
 		'stylus:production',
 		'sync',
