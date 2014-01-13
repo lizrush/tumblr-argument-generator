@@ -1,7 +1,8 @@
 var generateInsult,
     generateStatement,
     generateParagraph,
-    generateUsername
+    generateUsername,
+    generateAboutme
 
 generateInsult = function (initialInsult) {
 	var insult = ''
@@ -57,14 +58,28 @@ generateParagraph = function (mangleGrammar, minLength, maxRandom) {
 	return paragraph.join(' ')
 }
 
-generateUsername = function() {
+generateUsername = function () {
 	return '{marginalized.nouns.persons}'.randomRepeat(2, 2).replaceTerms().toLowerCase().replace(/[^a-z]/g, '')
+}
+
+generateAboutme = function (mangleGrammar) {
+	var aboutme = '',
+	    randomAge = Math.floor(Math.random() * (25 - 13 + 1)) + 13
+
+	aboutme += randomAge + '/{politics.nouns}/{marginalized.nouns.persons} '
+
+	aboutme += 'i blog about {concepts.awesome}. if you\'re a {insults.nouns} {insults.statements}'
+
+	aboutme = aboutme.replaceTerms().tumblrize(false, mangleGrammar).toLowerCase()
+
+	return aboutme
 }
 
 $(document).ready(function () {
 	var currentBackgroundImage = tumblr.resources.images.backgrounds.random(),
 	    renderInsult,
 	    renderWar,
+	    renderAboutme,
 	    updateBackground
 
 	renderInsult = function () {
@@ -88,6 +103,13 @@ $(document).ready(function () {
 		}
 
 		$('#argument').empty().append(war).attr('class', 'war')
+	}
+
+	renderAboutme = function () {
+		var tumblrize = $('#tumblrize-grammar').prop('checked'),
+		    aboutme = $('<p>').text(generateAboutme(tumblrize))
+
+		$('#argument').empty().append(aboutme).attr('class', 'aboutme')
 	}
 
 	updateBackground = function () {
@@ -119,6 +141,10 @@ $(document).ready(function () {
 	})
 	$('.controls button.generate-war').click(function () {
 		renderWar()
+		updateBackground()
+	})
+	$('.controls button.generate-aboutme').click(function () {
+		renderAboutme()
 		updateBackground()
 	})
 })
