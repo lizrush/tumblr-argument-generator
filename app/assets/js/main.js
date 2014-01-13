@@ -44,6 +44,7 @@ var generateInsult,
 	    insultAdjective: [
 		    'antediluvian',
 		    'awful',
+		    'body-shaming',
 		    'chauvinistic',
 		    'ciscentric',
 		    'close-minded',
@@ -54,6 +55,7 @@ var generateInsult,
 		    'heteropatriarchal',
 		    'ignorant',
 		    'inconsiderate',
+		    'insensitive',
 		    'intolerant',
 		    'judgmental',
 		    'misogynistic',
@@ -65,7 +67,44 @@ var generateInsult,
 		    'rape-culture-supporting',
 		    'sexist',
 		    'worthless',
-	    ],
+	    ].concat((function () {
+		    var result = [],
+		        phobias = [
+			        'ace',
+			        'bi',
+			        'chubby',
+			        'color',
+			        'curvy',
+			        'deathfat',
+			        'demi',
+			        'diversity',
+			        'ethnicity',
+			        'fat',
+			        'fatty',
+			        'female',
+			        'femi',
+			        'feminist',
+			        'furry',
+			        'homo',
+			        'latin@',
+			        'minority',
+			        'multigender',
+			        'otherkin',
+			        'queer',
+			        'smallfat',
+			        'stretchmark',
+			        'trans',
+			        'trans*',
+			        'womyn',
+			        'wymyn',
+		        ]
+
+		    $.each(phobias, function (i, phobia) {
+			    result.push(phobia + 'phobic')
+		    })
+
+		    return result
+	    })()),
 	    insultNoun: [
 		    'MRA',
 		    'TERF',
@@ -76,8 +115,11 @@ var generateInsult,
 		    'assimilationist',
 		    'basement dweller',
 		    'bigot',
+		    'binarist',
 		    'brogrammer',
+		    'carnist',
 		    'chauvinist',
+		    'cissexist',
 		    'classist',
 		    'creep',
 		    'dudebro',
@@ -103,147 +145,214 @@ var generateInsult,
 		    'scum',
 		    'sexist',
 		    'subhuman',
+		    'traditionalist',
 		    'transmisogynist',
 		    'virgin',
 	    ],
 	    fullInsult: function () {
 		    return (Math.random() > 0.3 ? tumblrTerm('insultAdjective') + ' ' : '') + tumblrTerm('insultNoun')
 	    },
-	    marginalizedNoun: [
-		    'CAFAB',
-		    'CAMAB',
-		    'LGBTQIA+',
-		    'PoC',
-		    'QTPOC',
-		    'WoC',
-		    'activist',
-		    'androphilia',
-		    'appearance',
-		    'asian',
-		    'attractive',
-		    'bi',
-		    'black',
-		    'body hair',
-		    'celestial',
-		    'chubby',
-		    'closet',
-		    'color',
-		    'cross-dresser',
-		    'curvy',
-		    'deathfat',
-		    'demi',
-		    'differently abled',
-		    'disabled',
-		    'diversity',
-		    'dysphoria',
-		    'estrogen-affinity',
-		    'ethnic',
-		    'ethnicity',
-		    'fandom',
-		    'fat love',
-		    'fat',
-		    'fatist',
-		    'fatty',
-		    'female',
-		    'feminist',
-		    'feminist',
-		    'freeganist',
-		    'furry',
-		    'genderless',
-		    'gynephilia',
-		    'headmate',
-		    'height',
-		    'hijra',
-		    'indigenous',
-		    'intersectionality',
-		    'intersexual',
-		    'invisible',
-		    'kin',
-		    'latin@',
-		    'lesbianist',
-		    'little person',
-		    'marginalized',
-		    'minority',
-		    'multigender',
-		    'multiple system',
-		    'native american',
-		    'non-gender',
-		    'non-white',
-		    'obesity',
-		    'otherkin',
-		    'privilege',
-		    'prosthetic',
-		    'queer',
-		    'radfem',
-		    'saami',
-		    'skinny',
-		    'smallfat',
-		    'stretchmark',
-		    'therian',
-		    'thin',
-		    'third-gender',
-		    'trans*',
-		    'transman',
-		    'transnormative',
-		    'transwoman',
-		    'trigger',
-		    'two-spirit',
-		    'womyn',
-		    'wymyn',
-	    ].concat((function () {
-		    var result = [],
-		        personalPrefixes = [
-			        'dandy',
-			        'demi',
-			        'gender',
-		        ],
-		        personalPostfixes = [
-			        'amorous',
-			        'femme',
-			        'fluid',
-			        'fuck',
-			        'queer',
-		        ],
-		        sexualPrefixes = [
-			        'a',
-			        'bi',
-			        'demi',
-			        'multi',
-			        'non',
-			        'omni',
-			        'pan',
-			        'para',
-			        'poly',
-			        'trans',
-		        ],
-		        sexualPostfixes = [
-			        'ethnic',
-			        'gender',
-			        'queer',
-			        'romantic',
-			        'sexual',
-			        'species',
-		        ]
+	    marginalized: {
+		    verb: {
+			    concept: [
+				    ['abuse', 'abusing', 'abuse'],
+				    ['attack', 'attacking', 'attacking'],
+				    ['deny', 'denying', 'denial'],
+				    ['discriminate', 'discriminating', 'discrimination'],
+				    ['exotify', 'exotifying', 'exotification'],
+				    ['fetishize', 'fetishizing', 'fetishization'],
+				    ['ignore', 'ignoring', 'ignoring'],
+				    ['marginalize', 'marginalizing', 'marginalization'],
+				    ['oppress', 'oppressing', 'oppression'],
+				    ['shame', 'shaming', 'shaming'],
+			    ],
+			    person: [
+				    ['abuse', 'abusing', 'abuse'],
+				    ['attack', 'attacking', 'attacking'],
+				    ['dehumanize', 'dehumanizing', 'dehumanization'],
+				    ['deny', 'denying', 'denial'],
+				    ['discriminate', 'discriminating', 'discrimination'],
+				    ['exotify', 'exotifying', 'exotification'],
+				    ['fetishize', 'fetishizing', 'fetishization'],
+				    ['harass', 'harassing', 'harassment'],
+				    ['hypersexualize', 'hypersexualizing', 'hypersexualization'],
+				    ['ignore', 'ignoring', 'ignoring'],
+				    ['kinkshame', 'kinkshaming', 'kinkshaming'],
+				    ['marginalize', 'marginalizing', 'marginalization'],
+				    ['misgender', 'misgendering', 'misgendering'],
+				    ['objectify', 'objectifying', 'objectification'],
+				    ['oppress', 'oppressing', 'oppression'],
+				    ['sexualize', 'sexualizing', 'sexualization'],
+				    ['shame', 'shaming', 'shaming'],
+				    ['stare-rape', 'stare-raping', 'stare-raping'],
+			    ],
+		    },
+		    noun: {
+			    concept: [
+				    'activism',
+				    'androphilia',
+				    'attractiveness',
+				    'body hair',
+				    'color',
+				    'communism',
+				    'diversity',
+				    'dysphoria',
+				    'egalitarianism',
+				    'ethnicity',
+				    'fandom',
+				    'fat love',
+				    'fatism',
+				    'feminism',
+				    'food addiction',
+				    'freeganism',
+				    'gynephilia',
+				    'height',
+				    'intersectionality',
+				    'intersexuality',
+				    'invisibility',
+				    'lesbianism',
+				    'minority',
+				    'multiplicity',
+				    'privilege',
+				    'stretchmark',
+				    'socialism',
+				    'underprivileged',
+				    'veganism',
+				    'vegetarianism',
+			    ],
+			    person: [
+				    'CAFAB',
+				    'CAMAB',
+				    'LGBTQIAP+',
+				    'PoC',
+				    'QTPOC',
+				    'WoC',
+				    'ace',
+				    'appearance',
+				    'asian',
+				    'bi',
+				    'prosthetic',
+				    'black',
+				    'celestial',
+				    'chubby',
+				    'closet',
+				    'cross-dresser',
+				    'curvy',
+				    'deathfat',
+				    'demi',
+				    'differently abled',
+				    'disabled',
+				    'ethnic',
+				    'estrogen-affinity',
+				    'fat',
+				    'fatty',
+				    'female',
+				    'furry',
+				    'genderless',
+				    'graysexual',
+				    'headmate',
+				    'hijra',
+				    'indigenous',
+				    'latin@',
+				    'little person',
+				    'multigender',
+				    'non-gender',
+				    'non-white',
+				    'obesity',
+				    'princex',
+				    'queer',
+				    'skinny',
+				    'smallfat',
+				    'survivor',
+				    'radfem',
+				    'therian',
+				    'native american',
+				    'thin',
+				    'third-gender',
+				    'trans*',
+				    'transabled',
+				    'transman',
+				    'transnormative',
+				    'transwoman',
+				    'vegan',
+				    'vegetarian',
+				    'two-spirit',
+				    'womyn',
+				    'victim',
+				    'wymyn',
+			    ].concat((function () {
+				    var result = [],
+				        personalPrefixes = [
+					        'dandy',
+					        'demi',
+					        'gender',
+				        ],
+				        personalPostfixes = [
+					        'amorous',
+					        'femme',
+					        'fluid',
+					        'fuck',
+					        'queer',
+				        ],
+				        sexualPrefixes = [
+					        'a',
+					        'bi',
+					        'demi',
+					        'multi',
+					        'non',
+					        'omni',
+					        'pan',
+					        'para',
+					        'poly',
+					        'trans',
+				        ],
+				        sexualPostfixes = [
+					        'ethnic',
+					        'gender',
+					        'queer',
+					        'racial',
+					        'romantic',
+					        'sexual',
+					        'species',
+				        ]
 
-		    $.each(personalPrefixes, function (i, pre) {
-			    $.each(personalPostfixes, function (i, post) {
-				    result.push(pre + post)
-			    })
-		    })
-		    $.each(sexualPrefixes, function (i, pre) {
-			    $.each(sexualPostfixes, function (i, post) {
-				    result.push(pre + post)
-			    })
-		    })
+				    $.each(personalPrefixes, function (i, pre) {
+					    $.each(personalPostfixes, function (i, post) {
+						    result.push(pre + post)
+					    })
+				    })
+				    $.each(sexualPrefixes, function (i, pre) {
+					    $.each(sexualPostfixes, function (i, post) {
+						    result.push(pre + post)
+					    })
+				    })
 
-		    return result
-	    })()),
+				    return result
+			    })()).concat((function () {
+				    var result = [],
+				        kins = [
+					        '',
+					        'cat',
+					        'dog',
+					        'dragon',
+					        'other',
+				        ]
+
+				    $.each(kins, function (i, kin) {
+					    result.push(kin + 'kin')
+				    })
+
+				    return result
+			    })()),
+		    },
+	    },
 	    privilegedNoun: [
 		    'able-body',
 		    'binary',
 		    'cis',
 		    'cisgender',
 		    'cishet',
+		    'college-educated',
 		    'gender',
 		    'hetero',
 		    'male',
@@ -261,9 +370,11 @@ var generateInsult,
 	    ],
 	    awesomeStuff: [
 		    'bodily integrity',
+		    'egalitarianism',
 		    'female rights',
 		    'female superiority',
 		    'female supremacy',
+		    'femininity',
 		    'feminism',
 		    'gender abolition',
 		    'misandry',
@@ -271,70 +382,73 @@ var generateInsult,
 	    ],
 	    terribleStuff: [
 		    'TERFism',
+		    'bindi wearing',
 		    'colonization',
 		    'cultural appropriation',
+		    'erosion of female self esteem',
+		    'exotification',
 		    'gender equality',
 		    'gender roles',
+		    'hypermasculinity',
 		    'institutionalized racism',
 		    'internalized misogynism',
 		    'internalized patriarchy',
 		    'labeling',
 		    'male domination',
 		    'male entitlement',
+		    'masculinity',
 		    'men\'s rights',
 		    'patriarchal beauty standards',
 		    'rape culture',
 		    'sexuality labels',
 		    'white feminism',
 		    'white opinions',
-		    'exotification',
-	    ],
-	    verb: [
-		    ['abuse', 'abusing', 'abuse'],
-		    ['attack', 'attacking', 'attacking'],
-		    ['dehumanize', 'dehumanizing', 'dehumanization'],
-		    ['deny', 'denying', 'denial'],
-		    ['discriminate', 'discriminating', 'discrimination'],
-		    ['exotify', 'exotifying', 'exotification'],
-		    ['fetishize', 'fetishizing', 'fetishization'],
-		    ['harass', 'harassing', 'harassment'],
-		    ['hypersexualize', 'hypersexualizing', 'hypersexualization'],
-		    ['ignore', 'ignoring', 'ignoring'],
-		    ['kinkshame', 'kinkshaming', 'kinkshaming'],
-		    ['marginalize', 'marginalizing', 'marginalization'],
-		    ['misgender', 'misgendering', 'misgendering'],
-		    ['objectify', 'objectifying', 'objectification'],
-		    ['oppress', 'oppressing', 'oppression'],
-		    ['sexualize', 'sexualizing', 'sexualization'],
-		    ['shame', 'shaming', 'shaming'],
-		    ['stare-rape', 'stare-raping', 'stare-raping'],
 	    ],
 	    sentence: [
-		    { forms: [0], format: 'why the fuck do you feel the need to {verb} {marginalizedNoun}-{personality}?' },
-		    { forms: [1], format: 'don\'t you see that {verb} {marginalizedNoun}-{personality} is problematic?' },
-		    { forms: [1], format: 'stop fucking {verb} {marginalizedNoun}-{personality}!' },
-		    { forms: [1], format: 'stop {verb} {marginalizedNoun}-{personality}!' },
-		    { forms: [1], format: 'you are a {marginalizedNoun}-{verb} {fullInsult}!' },
-		    { forms: [1], format: 'you should stop fucking {verb} {marginalizedNoun}-{personality}!' },
-		    { forms: [2], format: 'fuck your {verb} of {marginalizedNoun}-{personality}!' },
-		    { forms: [2], format: 'your {verb} of {marginalizedNoun}-{personality} is problematic!' },
+		    { forms: [0], format: 'why the fuck do you feel the need to {verb} {marginalized}?' },
+		    { forms: [1], format: 'don\'t you see that {verb} {marginalized} is problematic?' },
+		    { forms: [1], format: 'stop fucking {verb} {marginalized}!' },
+		    { forms: [1], format: 'stop {verb} {marginalized}!' },
+		    { forms: [1], format: 'you are a {marginalized}-{verb} {fullInsult}!' },
+		    { forms: [1], format: 'you should stop fucking {verb} {marginalized}!' },
+		    { forms: [2], format: 'fuck your {verb} of {marginalized}!' },
+		    { forms: [2], format: 'your {verb} of {marginalized} is problematic!' },
 	    ],
 	    fullSentence: function () {
 		    var rawSentence = tumblrTerm('sentence'),
 		        sentence = rawSentence.format.slice(0, -1),
 		        punctuation = rawSentence.format.slice(-1),
-		        verb = tumblrTerm('verb')
+		        type = ['person', 'concept'].random()
 
-		    return sentence.replace(/{verb}/gi, verb[rawSentence.forms.random()]) + (Math.random() > 0.4 ? ' you ' + tumblrTerm('fullInsult') : '') + punctuation
+		    sentence = sentence.replace(/{verb}/gi, tumblrDictionary.marginalized.verb[type].random()[rawSentence.forms.random()])
+		    sentence = sentence.replace(/{marginalized}/gi, function () {
+			    if (type === 'person') {
+				    return tumblrDictionary.marginalized.noun[type].random() + '-' + tumblrTerm('identifyingPerson')
+			    }
+			    return tumblrDictionary.marginalized.noun[type].random() + '-' + tumblrTerm('supportingPerson')
+		    })
+		    sentence += (Math.random() > 0.4 ? ' you ' + tumblrTerm('fullInsult') : '')
+		    sentence += punctuation
+
+		    return sentence
 	    },
-	    subject: [
-		    'hir',
-		    'they',
-		    'xe',
-		    'ze',
-		    'zhe',
-		    'zie',
+	    pronoun: [
+		    // Yes, these are real: http://en.wikipedia.org/wiki/Gender-specific_and_gender-neutral_pronouns#Summary
+		    ['ey', 'em', 'eir'],
+		    ['tho', 'thong', 'thors'],
+		    ['hu', 'hum', 'hus'],
+		    ['thon', 'thon', 'thons'],
+		    ['jee', 'jem', 'jeir'],
+		    ['ve', 'ver', 'vis'],
+		    ['xe', 'xem', 'xyr'],
+		    ['ze', 'zir', 'zes'],
+		    ['ze', 'hir', 'hir'],
+		    ['ze', 'mer', 'zer'],
+		    ['zhe', 'zhim', 'zher'],
 	    ],
+	    pronouns: function () {
+		    return tumblrTerm('pronoun').join('/')
+	    },
 	    intro: [
 		    '[TW: rant]',
 		    '[TW: words]',
@@ -343,19 +457,24 @@ var generateInsult,
 		    'for the love of god.',
 		    'i\'m going to get hate for this but',
 		    'just a friendly reminder:',
+		    'let me make this abundantly clear:',
 		    'no. just. no.',
 		    'oh. my. god.',
 		    'omg',
+		    'please stop.',
 		    'seriously?',
 		    'this. is. NOT. okay.',
 		    'wow. just. wow.',
 	    ],
 	    statement: [
+		    '"{privilegedNoun}" is extremely triggering to me!',
 		    '"{privilegedNoun}" is literally a trigger word for me!',
+		    'consensual sex is still rape!',
 		    'die in a fire!',
 		    'fuck off!',
 		    'fuck your {description} {terribleStuff}!',
-		    'fucking address me as "{subject}"!',
+		    'fucking address me as "{pronouns}"!',
+		    'fucking respect my {awesomeStuff}!',
 		    'get off my {description} case or i will report you for harassment!',
 		    'i am 100% done.',
 		    'i am crying right now!',
@@ -363,34 +482,47 @@ var generateInsult,
 		    'i don\'t need your {description} advice!',
 		    'i hope you fucking die!',
 		    'it is not my job to educate you!',
-		    'leave {marginalizedNoun}-{personality} the fuck alone!',
-		    'my pronoun is "{subject}"!',
+		    'leave {marginalized} the fuck alone!',
+		    'my pronouns are "{pronouns}"!',
 		    'no one cares about your {description} {insultNoun} {privilegedNoun} opinion!',
+		    'obesity ≠ unhealthy!',
 		    'oh my god!',
 		    'omg.',
 		    'people like you deserve to die!',
 		    'stop offending me!',
 		    'stop tone policing me!',
 		    'what the fuck do you have against {awesomeStuff}?',
-		    'what the fuck has {subject} ever done to you?',
 		    'why the FUCK should i respect your {description} {insultNoun} opinion?',
 		    'you are making me cry!',
 		    'you are perpetuating {terribleStuff}!',
 		    'you are the worst person alive!',
 		    'you are triggering me!',
 		    'you are worse than hitler!',
+		    'you can be fat and healthy!',
 		    'you make me sick!',
 		    'you should be ashamed of yourself!',
-		    'you will never understand my {description} {marginalizedNoun} struggles!',
+		    'you will never understand my {description} {marginalized} struggles!',
+		    'your {description} {insultNoun} {privilegedNoun}-privileged opinion is worthless!',
+		    'your {terribleStuff} is problematic!',
 		    'your {terribleStuff} keeps me from having any {description} rights!',
-		    '{terribleStuff} is so annoying!',
+		    '{terribleStuff} is so {description} annoying!',
 	    ],
 	    fullStatement: function () {
 		    var rawStatement = tumblrTerm('statement'),
 		        statement = rawStatement.slice(0, -1),
-		        punctuation = rawStatement.slice(-1)
+		        punctuation = rawStatement.slice(-1),
+		        type = ['person', 'concept'].random()
 
-		    return statement + (Math.random() > 0.5 && punctuation !== '.' ? ' you ' + tumblrTerm('fullInsult') : '') + punctuation
+		    statement = statement.replace(/{marginalized}/gi, function () {
+			    if (type === 'person') {
+				    return tumblrDictionary.marginalized.noun[type].random() + '-' + tumblrTerm('identifyingPerson')
+			    }
+			    return tumblrDictionary.marginalized.noun[type].random() + '-' + tumblrTerm('supportingPerson')
+		    })
+		    statement += Math.random() > 0.4 && punctuation !== '.' ? ' you ' + tumblrTerm('fullInsult') : ''
+		    statement += punctuation
+
+		    return statement
 	    },
 	    emoji: [
 		    '(◕﹏◕✿)',
@@ -412,12 +544,32 @@ var generateInsult,
 		    'tl;dr',
 		    'to summarize:',
 	    ],
-	    personality: (function () {
+	    identifyingPerson: (function () {
 		    var result = [],
 		        prefixes = [
 			        'aligned',
 			        'identifying',
 			        'type',
+		        ],
+		        postfixes = [
+			        'individuals',
+			        'people',
+			        'personalities',
+		        ]
+
+		    $.each(prefixes, function (i, pre) {
+			    $.each(postfixes, function (i, post) {
+				    result.push(pre + ' ' + post)
+			    })
+		    })
+
+		    return result
+	    })(),
+	    supportingPerson: (function () {
+		    var result = [],
+		        prefixes = [
+			        'aligned',
+			        'supporting',
 		        ],
 		        postfixes = [
 			        'individuals',
@@ -481,7 +633,12 @@ tumblrizeText = function (text, uppercase) {
 
 	// Randomly add out-of-place punctuation
 	text = text.replace(/\b /g, function () {
-		return Math.random() > 0.05 ? ' ' : [',', '.'].random().randomRepeat(4)
+		return Math.random() > 0.05 ? ' ' : [', ', '. '].random()
+	})
+
+	// Randomly remove all punctuation
+	text = text.replace(/([\.,\!\?:])/g, function (m, p1) {
+		return Math.random() > 0.5 ? '' : p1
 	})
 
 	// Randomly add tildes and asterisks around text
@@ -549,7 +706,8 @@ weightedArray = function (array, weights) {
 }
 
 generateInsult = function (initial, tumblrize) {
-	var insult = ''
+	var insult = '',
+	    type = ['person', 'concept'].random()
 
 	if (initial) {
 		insult += tumblrTerm('insult')
@@ -559,8 +717,8 @@ generateInsult = function (initial, tumblrize) {
 			insult += tumblrTerm('insultAdjective') + ' '
 		}
 		if (Math.random() > 0.3) {
-			insult += tumblrTerm('marginalizedNoun')
-			insult += '-' + tumblrTerm('verb')[1] + ', '
+			insult += tumblrDictionary.marginalized.noun[type].random()
+			insult += '-' + tumblrDictionary.marginalized.verb[type].random()[1] + ', '
 		}
 	}
 	else {
@@ -608,6 +766,9 @@ generateParagraph = function (tumblrize, minLength, maxRandom) {
 		// Randomly make stuff literal
 		sentence = literalize(sentence)
 
+		// Replace "and" with ampersand
+		sentence = sentence.replace(/\band\b/g, '&')
+
 		if (tumblrize) {
 			sentence = tumblrizeText(sentence, Math.random() > 0.4)
 		}
@@ -634,7 +795,7 @@ generateParagraph = function (tumblrize, minLength, maxRandom) {
 }
 
 generateUsername = function() {
-	return (tumblrTerm('marginalizedNoun') + tumblrTerm('marginalizedNoun')).toLowerCase().replace(/[^a-z]/g, '')
+	return (tumblrDictionary.marginalized.noun.person.random() + tumblrDictionary.marginalized.noun.person.random()).toLowerCase().replace(/[^a-z]/g, '')
 }
 
 $(document).ready(function () {
@@ -684,7 +845,7 @@ $(document).ready(function () {
 
 	// Add some stats
 	$('.privileged-groups-length').text(' ' + (tumblrDictionary.privilegedAdjective.length * tumblrDictionary.privilegedNoun.length) + ' ')
-	$('.marginalized-groups-length').text(' ' + (tumblrDictionary.marginalizedNoun.length * tumblrDictionary.verb.length) + ' ')
+	$('.marginalized-groups-length').text(' ' + (tumblrDictionary.marginalized.noun.concept.length * tumblrDictionary.marginalized.verb.concept.length + tumblrDictionary.marginalized.noun.person.length * tumblrDictionary.marginalized.verb.person.length) + ' ')
 
 	$('#argument').removeClass('loading')
 
