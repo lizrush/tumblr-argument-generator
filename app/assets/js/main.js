@@ -9,12 +9,27 @@ String.prototype.randomRepeat = function (len) {
 var generateInsult,
     generateParagraph,
     generateUsername,
+    generateAboutme,
     replaceTerms,
     literalize,
     weightedArray,
     tumblrizeText,
     tumblrTerm,
     tumblrDictionary = {
+    	politicsNoun: [
+    	'vegan',
+    	'animal rights activist',
+    	'feminist',
+    	'egalitarianist',
+    	'freegan',
+    	'anti-SJW',
+    	'social justice activist',
+    	'athiest',
+    	'zapatista',
+    	'communist',
+    	'socialist',
+    	'men\'s rights',
+    	],
 	    description: [
 		    'damn',
 		    'fucking',
@@ -580,11 +595,23 @@ generateInsult = function (initial, tumblrize) {
 }
 
 // #############################
-generateAboutme = function (tumblrize)
+generateAboutme = function (tumblrize) {
 	var aboutme = ''
+	var randomAge = Math.floor(Math.random() * (25 - 13 + 1)) + 13;
 
-	aboutme += aboutmeTerm('age') + '/' + aboutmeTerm('politicsNoun') + '/' aboutmeTerm('genderTerm')
+	aboutme += randomAge + '/' + tumblrTerm('politicsNoun') + '/' tumblrTerm('marginalizedNoun')
 
+	aboutme += 'i blog about ' + tumblrTerm('awesomeStuff') + '. if you\'re a ' + tumblrTerm('insultNoun') + ' '
+	aboutme += tumblrTerm('insult')
+	
+	if (tumblrize) {
+		aboutme = tumblrizeText(aboutme)
+	}
+
+	return aboutme.trim()
+}	
+
+// #############################
 generateParagraph = function (tumblrize, minLength, maxRandom) {
 	var paragraph = [],
 	    length = (typeof minLength === 'undefined' ? 3 : minLength) + Math.random() * (typeof maxRandom === 'undefined' ? 7 : maxRandom),
@@ -675,9 +702,9 @@ $(document).ready(function () {
 // #############################
 		renderAboutme = function () {
 		var tumblrize = $('#tumblrize-grammar').prop('checked'),
-		    aboutme = $('<p>').text(generateAboutme(true, tumblrize).toUpperCase())
+		    aboutme = $('<p>').text(generateAboutme(true, tumblrize))
 
-		$('#argument').empty().append(insult).attr('class', 'insult')
+		$('#argument').empty().append(aboutme).attr('class', 'aboutme')
 	}
 // #############################
 	updateBackground = function () {
