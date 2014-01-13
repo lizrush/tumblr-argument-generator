@@ -67,8 +67,7 @@ generateAboutme = function (mangleGrammar) {
 	    randomAge = Math.floor(Math.random() * (25 - 13 + 1)) + 13
 
 	aboutme += randomAge + '/{politics.nouns}/{marginalized.nouns.persons} '
-
-	aboutme += 'i blog about {concepts.awesome}. if you\'re a {insults.nouns} {insults.statements}'
+	aboutme += tumblr.resources.presentations.random()
 
 	aboutme = aboutme.replaceTerms().tumblrize(false, mangleGrammar).toLowerCase()
 
