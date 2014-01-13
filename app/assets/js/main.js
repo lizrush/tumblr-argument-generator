@@ -579,6 +579,10 @@ generateInsult = function (initial, tumblrize) {
 	return insult.trim()
 }
 
+// #############################
+generateAboutme = function (tumblrize)
+
+
 generateParagraph = function (tumblrize, minLength, maxRandom) {
 	var paragraph = [],
 	    length = (typeof minLength === 'undefined' ? 3 : minLength) + Math.random() * (typeof maxRandom === 'undefined' ? 7 : maxRandom),
@@ -666,7 +670,14 @@ $(document).ready(function () {
 
 		$('#argument').empty().append(war).attr('class', 'war')
 	}
+// #############################
+		renderAboutme = function () {
+		var tumblrize = $('#tumblrize-grammar').prop('checked'),
+		    aboutme = $('<p>').text(generateAboutme(true, tumblrize).toUpperCase())
 
+		$('#argument').empty().append(insult).attr('class', 'insult')
+	}
+// #############################
 	updateBackground = function () {
 		if ($('#tumblrize-grammar').prop('checked')) {
 			$('body').addClass('tumblrized')
