@@ -581,7 +581,9 @@ generateInsult = function (initial, tumblrize) {
 
 // #############################
 generateAboutme = function (tumblrize)
+	var aboutme = ''
 
+	aboutme += aboutmeTerm('age') + '/' + aboutmeTerm('politicsNoun') + '/' aboutmeTerm('genderTerm')
 
 generateParagraph = function (tumblrize, minLength, maxRandom) {
 	var paragraph = [],
@@ -709,4 +711,11 @@ $(document).ready(function () {
 		renderWar()
 		updateBackground()
 	})
+
+// #############################
+		$('.controls button.generate-aboutme').click(function () {
+		renderAboutme()
+		updateBackground()
+	})
+// #############################		
 })
