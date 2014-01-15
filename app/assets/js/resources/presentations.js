@@ -4,5 +4,5 @@ tumblr.resources.presentations = [
 	'fighting {concepts.terrible} / fighting {concepts.terrible} / fighting {concepts.terrible}',
 	'my pronuns are: {joinedPronouns} or {joinedPronouns}',
 	'my triggers include: {concepts.terrible}, {concepts.terrible} and {concepts.terrible}',
-	'part {kins}/{kins} with some {rawKins} traits'
+	'part {kins}/{kins} with some {rawKins} traits',
 ]
