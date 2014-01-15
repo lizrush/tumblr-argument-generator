@@ -44,11 +44,12 @@ strong
 	#sidebar
 		float: right
 		width: 240px
-		background: rgba(#000, .1)
+		background: rgba(#000, .2)
 		margin: 20px 0 20px 20px
 		padding: 10px
 		border-radius: 3px
 		text-align: center
+		min-height: 400px
 		#about
 			font-weight: bold
 		#presentation
@@ -124,8 +125,13 @@ strong
 	z-index: 10
 	height: 60px
 	line-height: 60px
-	label
-		cursor: pointer
+	&:before,
+	&:after
+		font-size: 18px
+	&:before
+		content: '▶▶▶ '
+	&:after
+		content: ' ◀◀◀'
 	button
 		background: linear-gradient(top, #eee, #ddd)
 		border: 1px solid
@@ -137,12 +143,21 @@ strong
 		padding: 8px 40px
 		margin: 0 10px
 		transition: all .1s linear
+		text-shadow: 0 1px 0 rgba(#fff, .5)
 		&:hover
 			background: linear-gradient(top, darken(#fff, 3), darken(#eee, 3))
 			opacity: 1 !important
 		&:active
 			background: linear-gradient(top, #ddd, #eee)
 			border-color: #aaa #ccc #ccc #aaa
+		&.generate-blog
+			background: linear-gradient(top, #7c5, #6b4)
+			border-color: #6a4 #371 #371 #6a4
+			&:hover
+				background: linear-gradient(top, #8d6, #7c5)
+			&:active
+				background: linear-gradient(top, #7c5,#8d6)
+				border-color: #371 #6a4 #6a4 #371
 
 #footer
 	margin: 10px 0 0 0
