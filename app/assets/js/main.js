@@ -84,16 +84,21 @@ renderBlog = function () {
 	})
 
 	// Create argument
-	argument = $('<p>').text(generateParagraph(Math.random() > mangleChance))
+	argument = $('<p>').attr('class', 'top').text(generateParagraph(Math.random() > mangleChance))
 	for (i = 0; i < 2 + Math.random() * 3; i += 1) {
 		argument = $('<div>').append(
 			$('<cite>').text(generateUsername() + ':'),
 			$('<blockquote>').append(argument),
-			$('<p>').text(Math.random() > 0.6 ?
-			              generateParagraph(Math.random() > mangleChance) :
-			              (generateInsult(true) + '!').replaceTerms().tumblrize(Math.random() > mangleChance))
+			$('<p>')
+				.attr('class', 'reply')
+				.text(Math.random() > 0.6 ?
+				      generateParagraph(Math.random() > mangleChance) :
+				      (generateInsult(true) + '!').replaceTerms().tumblrize(Math.random() > mangleChance))
 		)
 	}
+
+	// Randomly replace an argument with an image
+	$(_.sample(argument.find('.reply'))).empty().append($('<img>').attr('src', 'static/img/inline/' + tumblr.resources.images.inline.random()))
 
 	// Add hashtags
 	_.forEach(_.sample(tumblr.resources.concepts.awesome, 5 + Math.floor(Math.random() * 3)), function (concept) {
