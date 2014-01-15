@@ -1,4 +1,4 @@
-tumblr.resources.personalities = tumblr.generators.personalities([
+tumblr.resources.personalities = tumblrPrePostfixer([
 	'aligned',
 	'identifying',
 	'type',

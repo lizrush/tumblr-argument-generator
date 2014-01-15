@@ -94,5 +94,5 @@ tumblr.resources.marginalized = {
 		'victim',
 		'womyn',
 		'wymyn',
-	].concat(tumblr.generators.alignments(), tumblr.generators.kins())
+	].concat(tumblr.resources.alignments, tumblr.resources.kins)
 }

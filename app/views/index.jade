@@ -18,20 +18,25 @@ html(lang='en')
 		script(src='static/js/main.js')
 
 	body
+		#controls
+			button.generate-blog Generate blog
+			button.generate-insult Generate tumblr insult
+
+		#insult
+			p Insult
+
 		#contents
-			p#argument.loading Loading argument...
+			h1#title This is Social Justice
 
-			.controls
-				button.generate-insult Generate tumblr insult
+			aside#sidebar
+				#about
+				ul#presentation
+				.disclaimer feel free to write to me if you were bothered by something i posted.
 
-				button.generate-war Generate tumblr war
-				input(type='number', min='0', step='1', id='num-replies', value='2')
-				label(for='num') replies
+			#argument
 
-			.controls
-				label(for='tumblrize-grammar')
-					input(type='checkbox', id='tumblrize-grammar')
-					|  Tumblrize grammar
+			ul#hashtags
+			ul#reblogs
 
 		#footer
 			div.stats
@@ -41,5 +46,6 @@ html(lang='en')
 				strong.marginalized-groups-length  …
 				|  oppressed groups.
 
-			div
-				a(href='https://github.com/Lokaltog/tumblr-argument-generator') GitHub
+		div#forkme
+			a(href='https://github.com/Lokaltog/tumblr-argument-generator')
+				img(src='static/img/forkme.png', alt='Fork me on GitHub')

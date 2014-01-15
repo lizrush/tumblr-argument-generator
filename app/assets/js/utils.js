@@ -170,3 +170,19 @@ String.prototype.replaceTerms = function () {
 
 	return text.toString()
 }
+
+var tumblrPrePostfixer = function (prefixes, postfixes, connector) {
+	var result = []
+
+	if (typeof connector === 'undefined') {
+		connector = ' '
+	}
+
+	_.forEach(prefixes, function (pre) {
+		_.forEach(postfixes, function (post) {
+			result.push(pre + connector + post)
+		})
+	})
+
+	return result
+}

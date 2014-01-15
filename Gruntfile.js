@@ -25,7 +25,6 @@ module.exports = function (grunt) {
 				src: [
 					'app/assets/js/header.js',
 					'app/assets/js/utils.js',
-					'app/assets/js/generators.js',
 					'app/assets/js/resources/*.js',
 					'app/assets/js/main.js',
 				],
