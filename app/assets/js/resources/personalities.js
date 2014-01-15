@@ -1,18 +1,10 @@
-tumblr.resources.personalities = {
-	persons: tumblr.generators.personalities([
-		'aligned',
-		'identifying',
-		'type',
-	], [
-		'individuals',
-		'people',
-		'personalities',
-	]),
-	concepts: tumblr.generators.personalities([
-		'supporting',
-	], [
-		'individuals',
-		'people',
-		'personalities',
-	])
-}
+tumblr.resources.personalities = tumblr.generators.personalities([
+	'aligned',
+	'identifying',
+	'type',
+	'supporting',
+], [
+	'individuals',
+	'people',
+	'personalities',
+])

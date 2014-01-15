@@ -1,23 +1,5 @@
-Array.prototype.random = function () {
-	Math.random()
-	Math.random()
-	Math.random()
-	return this[Math.floor(Math.random() * this.length)]
-}
-
-Array.prototype.weighted = function (weights) {
-	var ret = [],
-	    i, j, multiples
-
-	for (i = 0; i < weights.length; i += 1) {
-		multiples = weights[i] * 10
-
-		for (j = 0; j < multiples; j += 1) {
-			ret.push(this[i])
-		}
-	}
-
-	return ret
+Array.prototype.random = function (n) {
+	return _.sample(this, n)
 }
 
 Object.prototype.accessProperty = function (path) {
@@ -53,22 +35,12 @@ String.prototype.literalize = function () {
 	return text.toString()
 }
 
-String.prototype.tumblrize = function (addExtraInsults, mangleGrammar) {
-	// TODO make this handle text in separate sentences (match delimiters/symbols)
-	var rawText = this,
-	    text = rawText.slice(0, -1),
-	    punctuation = rawText.slice(-1),
-	    wrap, randomPoint
+String.prototype.tumblrize = function (mangleGrammar) {
+	var text = this
 
-	if (typeof addExtraInsults === 'undefined') {
-		addExtraInsults = false
-	}
 	if (typeof mangleGrammar === 'undefined') {
 		mangleGrammar = false
 	}
-
-	// Normalize text
-	text = text.toLowerCase()
 
 	// Randomly make stuff literal
 	text = text.literalize()
@@ -76,111 +48,123 @@ String.prototype.tumblrize = function (addExtraInsults, mangleGrammar) {
 	// Replace "and" with ampersand
 	text = text.replace(/\band\b/g, '&')
 
-	// Randomly add some extra insults
-	if (addExtraInsults && Math.random() > 0.4 && punctuation.search(/[\!\?]/gi) !== -1) {
-		text += ' you ' + tumblr.resources.randomInsult()
-	}
-
-	text += punctuation
-
 	if (mangleGrammar) {
-		// Normalize text
-		text = text.toLowerCase()
-
-		// Randomly remove existing commas
-		text = text.replace(/,/g, function () {
-			return Math.random() > 0.3 ? '' : ','
-		})
-
-		// Randomly add out-of-place punctuation
-		text = text.replace(/\b /g, function () {
-			return Math.random() > 0.05 ? ' ' : [', ', '. '].random()
-		})
-
-		// Randomly remove all punctuation
-		text = text.replace(/([\.,\!\?:])/g, function (m, p1) {
-			return Math.random() > 0.5 ? '' : p1
-		})
-
-		// Randomly add tildes and asterisks around text
-		if (Math.random() > 0.8) {
-			wrap = '~'.randomRepeat(5)
-			if (Math.random() > 0.3) {
-				wrap += '*'
-			}
-			text = wrap + text + wrap.split('').reverse().join('')
-		}
-
 		// Convert you/you're, etc
 		text = text.replace(/you're/g, 'ur')
 		text = text.replace(/you/g, 'u')
 		text = text.replace(/people/g, 'ppl')
 		text = text.replace(/please/g, 'plz')
-		text = text.replace(/([^e])e([dr])\b/g, function (m, p1, p2) {
-			return (Math.random() > 0.4 ? p1 + 'e' + p2 : p1 + p2)
+		text = text.replace(/\bhate\b/g, 'h8')
+		text = text.replace(/\bto\b/g, '2')
+		text = text.replace(/\bthe\b/g, function () {
+			return Math.random() > 0.3 ? 'the' : 'teh'
 		})
+
+		// Swap eist -> iest
+		text = text.replace(/eist/g, 'iest')
 
 		// Remove all apostrophes
 		text = text.replace(/'/g, '')
 
-		// Add emoji
-		if (Math.random() > 0.8) {
-			text += ' ' + tumblr.resources.emoji.random()
+		// Randomly add out-of-place punctuation
+		text = text.replace(/\b /g, function () {
+			return Math.random() > 0.03 ? ' ' : [', ', '. '].random()
+		})
+	}
+
+	// Tumblrize individual sentences
+	text = text.replace(/(.+?)([\!\?])/gi, function (m, sentence, punc) {
+		if (Math.random() > 0.6) {
+			return m
 		}
-	}
 
-	// Randomly uppercase text
-	if (Math.random() > 0.4) {
-		text = text.toUpperCase()
-	}
+		sentence = sentence.trim()
 
-	// Randomly lowercase first characters
-	randomPoint = Math.floor(Math.random() * (text.length / 3))
-	text = text.slice(0, randomPoint).toLowerCase() + text.slice(randomPoint, text.length)
+		if (mangleGrammar) {
+			// Randomly uppercase part of or whole sentences
+			// Uppercase from random point in sentence
+			var randomPoint = Math.floor(Math.random() * sentence.length / 2), wrap
+
+			sentence = sentence.slice(0, randomPoint) + sentence.slice(randomPoint, sentence.length).toUpperCase()
+			sentence += punc
+
+			// Randomly add tildes and asterisks around text
+			if (Math.random() > 0.8) {
+				wrap = '~'.randomRepeat(5)
+				if (Math.random() > 0.3) {
+					wrap += '*'
+				}
+				sentence = wrap + sentence + wrap.split('').reverse().join('')
+			}
+
+			// Add emoji
+			if (Math.random() > 0.75) {
+				sentence += ' ' + tumblr.resources.emoji.random()
+			}
+
+			return ' ' + sentence
+		}
+
+		return m.toUpperCase()
+	})
 
 	// Randomly repeat punctuation
 	text = text.replace(/([\!\?]+)/g, function (m, p1) {
-		return p1.slice(0, 1).randomRepeat(10)
+		return p1.slice(0, 1).randomRepeat(8, 3)
 	})
 
 	return text.toString()
 }
 
-String.prototype.replaceTerms = function (form) {
-	var statementType = ['persons', 'concepts'].random(),
-	    re = /\{([a-z\.]+)\}/gi,
-	    i = 0,
+String.prototype.replaceTerms = function () {
+	var re = /\{([a-z\.]+)(:([0-9]+))?\}/gi,
 	    text = this,
-	    replaceTerm
-
-	if (typeof form === 'undefined') {
-		form = 1
-	}
-
-	replaceTerm = function (m, term) {
-		var termDict = tumblr.resources.accessProperty(term)
-
-		if (typeof termDict === 'function') {
-			return termDict()
-		}
-
-		if (typeof termDict === 'object' && termDict.hasOwnProperty(statementType)) {
-			termDict = termDict[statementType]
-		}
-
-		term = termDict.random()
-
-		if (typeof term === 'object') {
-			term = term.length === 3 ? term[form] : term.random()
-		}
-
-		return term
-	}
+	    i = 0,
+	    termCount, termIndex
 
 	while (text.search(re) !== -1 && i < 5) {
-		// Loop until all terms have been replaced
-		// Max 5 recursions
-		text = text.replace(re, replaceTerm)
+		termCount = {}
+		termIndex = {}
+
+		// Make index of unique terms to avoid repetition
+		// First index how many terms we should sample
+		_.forEach(text.match(re), function (item) {
+			var termKey = item.match(/[a-z\.]+/i)[0]
+
+			if (!termCount.hasOwnProperty(termKey)) {
+				termCount[termKey] = 1
+			}
+
+			termCount[termKey] += 1
+		})
+
+		// Sample terms and store in index
+		_.forEach(termCount, function (count, term) {
+			var termDict = tumblr.resources.accessProperty(term)
+
+			termIndex[term] = _.sample(termDict, count)
+		})
+
+		// Replace terms from index
+		text = text.replace(re, function (m, matchTerm, formFull, form) {
+			term = termIndex[matchTerm].pop()
+
+			if (typeof term === 'undefined') {
+				// This may happen if there are too few terms, in that case sample random term instead
+				term = tumblr.resources.accessProperty(matchTerm).random()
+			}
+
+			if (typeof form === 'undefined') {
+				form = 1
+			}
+
+			if (typeof term === 'object') {
+				term = term[form]
+			}
+
+			return term
+		})
+
 		i += 1
 	}
 

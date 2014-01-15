@@ -1,8 +1,8 @@
 tumblr.generators.personalities = function (prefixes, postfixes) {
 	var result = []
 
-	$.each(prefixes, function (i, pre) {
-		$.each(postfixes, function (i, post) {
+	_.forEach(prefixes, function (pre) {
+		_.forEach(postfixes, function (post) {
 			result.push(pre + ' ' + post)
 		})
 	})
@@ -26,7 +26,7 @@ tumblr.generators.phobias = function () {
 		    'womyn',
 	    ]
 
-	$.each(phobias, function (i, phobia) {
+	_.forEach(phobias, function (phobia) {
 		result.push(phobia + 'phobic')
 	})
 
@@ -75,9 +75,9 @@ tumblr.generators.alignments = function () {
 		    }
 	    ]
 
-	$.each(groups, function (i, group) {
-		$.each(group.pre, function (i, pre) {
-			$.each(group.post, function (i, post) {
+	_.forEach(groups, function (group) {
+		_.forEach(group.pre, function (pre) {
+			_.forEach(group.post, function (post) {
 				result.push(pre + post)
 			})
 		})
@@ -96,7 +96,7 @@ tumblr.generators.kins = function () {
 		    'other',
 	    ]
 
-	$.each(kins, function (i, kin) {
+	_.forEach(kins, function (kin) {
 		result.push(kin + 'kin')
 	})
 

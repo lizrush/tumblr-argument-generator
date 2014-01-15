@@ -1,5 +1,4 @@
 var generateInsult,
-    generateStatement,
     generateParagraph,
     generateUsername
 
@@ -22,43 +21,45 @@ generateInsult = function (initialInsult) {
 
 	insult += '{privileged.nouns}-{privileged.adjectives} {insults.nouns}'
 
-	return insult.replaceTerms()
-}
-
-generateStatement = function () {
-	var statement = tumblr.resources.statements.random()
-
-	return statement[1].replaceTerms(statement[0])
+	return insult
 }
 
 generateParagraph = function (mangleGrammar, minLength, maxRandom) {
 	var paragraph = [],
-	    length = (typeof minLength === 'undefined' ? 3 : minLength) + Math.random() * (typeof maxRandom === 'undefined' ? 7 : maxRandom),
-	    sentence, i
+	    length = Math.round((typeof minLength === 'undefined' ? 4 : minLength) + Math.random() * (typeof maxRandom === 'undefined' ? 7 : maxRandom)),
+	    dist = {
+		    insult: Math.round(0.2 * length),
+		    statement: Math.round(0.8 * length),
+	    }, i, statements
 
-	for (i = 0, sentence = ''; i < length; i += 1) {
-		if (i === 0) {
-			sentence += tumblr.resources.intros.random().tumblrize(false, mangleGrammar)
-		}
-		else if (Math.random() > 0.8) {
-			sentence = (generateInsult(Math.random() > 0.3) + '!').tumblrize(false, mangleGrammar)
-		}
-		else {
-			sentence = generateStatement().tumblrize(true, mangleGrammar)
-		}
-
-		paragraph.push(sentence)
+	for (i = 0; i < dist.insult; i += 1) {
+		paragraph.push(generateInsult(Math.random() > 0.3) + '!')
 	}
 
-	if (Math.random() > 0.6) {
-		paragraph.push((tumblr.resources.conclusions.random() + ' ' + tumblr.resources.insults.statements.random() + '!').replaceTerms().tumblrize(false, mangleGrammar))
+	paragraph = paragraph.concat(_.map(_.sample(tumblr.resources.statements, dist.statement), function (val) {
+		if (Math.random() > 0.5) {
+			return val
+		}
+		var text = val.slice(0, -1),
+		    punc = val.slice(-1)
+
+		// Randomly add some extra insults to statements
+		return text + (' you ' + (Math.random() > 0.3 ? '{insults.adjectives} ' : '') + '{insults.nouns}') + punc
+	}))
+
+	paragraph = _.shuffle(paragraph)
+
+	paragraph[0] = '{intros} ' + paragraph[0]
+
+	if (Math.random() > 0.5) {
+		paragraph.push('{conclusions} {insults.statements}')
 	}
 
-	return paragraph.join(' ')
+	return paragraph.join(' ').replaceTerms().tumblrize(mangleGrammar)
 }
 
 generateUsername = function() {
-	return '{marginalized.nouns.persons}'.randomRepeat(2, 2).replaceTerms().toLowerCase().replace(/[^a-z]/g, '')
+	return '{marginalized.nouns}'.randomRepeat(2, 2).replaceTerms().toLowerCase().replace(/[^a-z]/g, '')
 }
 
 $(document).ready(function () {
@@ -68,21 +69,21 @@ $(document).ready(function () {
 	    updateBackground
 
 	renderInsult = function () {
-		var insult = $('<p>').text(generateInsult(true).tumblrize(false, $('#tumblrize-grammar').prop('checked')).toUpperCase())
+		var insult = $('<p>').text(generateInsult(true).replaceTerms().tumblrize($('#tumblrize-grammar').prop('checked')).toUpperCase())
 
 		$('#argument').empty().append(insult).attr('class', 'insult')
 	}
 
 	renderWar = function () {
-		var tumblrize = $('#tumblrize-grammar').prop('checked'),
+		var mangleGrammar = $('#tumblrize-grammar').prop('checked'),
 		    numReplies = $('#num-replies').val(),
-		    war = $('<p/>').text(generateParagraph(tumblrize)),
+		    war = $('<p/>').text(generateParagraph(mangleGrammar)),
 		    i, username, blockquote, reply
 
 		for (i = 0; i < numReplies; i += 1) {
 			username = $('<p/>').text(generateUsername() + ':').attr('class', 'username')
 			blockquote = $('<blockquote/>').append(war)
-			reply = $('<p/>').text(Math.random() > 0.6 ? generateParagraph($('#tumblrize-grammar').prop('checked'), 4, 1) : generateInsult(true).tumblrize(false, tumblrize).toUpperCase())
+			reply = $('<p/>').text(Math.random() > 0.6 ? generateParagraph($('#tumblrize-grammar').prop('checked'), 4, 1) : generateInsult(true).replaceTerms().tumblrize(mangleGrammar).toUpperCase())
 
 			war = $('<div/>').append(username).append(blockquote).append(reply)
 		}
@@ -107,7 +108,7 @@ $(document).ready(function () {
 
 	// Add some stats
 	$('.privileged-groups-length').text(' ' + (tumblr.resources.privileged.adjectives.length * tumblr.resources.privileged.nouns.length) + ' ')
-	$('.marginalized-groups-length').text(' ' + (tumblr.resources.marginalized.nouns.concepts.length * tumblr.resources.marginalized.verbs.concepts.length + tumblr.resources.marginalized.nouns.persons.length * tumblr.resources.marginalized.verbs.persons.length) + ' ')
+	$('.marginalized-groups-length').text(' ' + (tumblr.resources.marginalized.nouns.length * tumblr.resources.marginalized.verbs.length) + ' ')
 
 	$('#argument').removeClass('loading')
 

@@ -44,7 +44,6 @@ tumblr.resources.insults = {
 		'patriarchal',
 		'racist',
 		'rape-culture-supporting',
-		'sexist',
 		'worthless',
 	].concat(tumblr.generators.phobias()),
 	nouns: [
@@ -91,8 +90,4 @@ tumblr.resources.insults = {
 		'transmisogynist',
 		'virgin',
 	],
-}
-
-tumblr.resources.randomInsult = function () {
-	return (Math.random() > 0.3 ? tumblr.resources.insults.adjectives.random() + ' ' : '') + tumblr.resources.insults.nouns.random()
 }

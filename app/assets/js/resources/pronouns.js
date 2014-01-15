@@ -13,6 +13,10 @@ tumblr.resources.pronouns = [
 	['zhe', 'zhim', 'zher'],
 ]
 
-tumblr.resources.randomPronouns = function () {
-	return tumblr.resources.pronouns.random().join('/')
-}
+tumblr.resources.joinedPronouns = (function () {
+	var ret = []
+	_.forEach(tumblr.resources.pronouns, function (pronouns) {
+		ret.push(pronouns.join('/'))
+	})
+	return ret
+})()
