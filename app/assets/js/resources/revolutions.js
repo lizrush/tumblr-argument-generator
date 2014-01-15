@@ -1,8 +1,6 @@
 tumblr.resources.revolutions = (function () {
 	var result = [],
 	    marginalized = [
-		    'PoC',
-		    'WoC',
 		    'aceo',
 		    'black',
 		    'chubby',

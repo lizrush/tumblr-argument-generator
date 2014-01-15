@@ -1,6 +1,8 @@
 var generateInsult,
     generateParagraph,
-    generateUsername
+    generateUsername,
+    renderInsult,
+    renderBlog
 
 generateInsult = function (initialInsult) {
 	var insult = ''
@@ -26,11 +28,11 @@ generateInsult = function (initialInsult) {
 
 generateParagraph = function (mangleGrammar, minLength, maxRandom) {
 	var paragraph = [],
-	    length = Math.round((typeof minLength === 'undefined' ? 4 : minLength) + Math.random() * (typeof maxRandom === 'undefined' ? 7 : maxRandom)),
+	    length = Math.round((typeof minLength === 'undefined' ? 3 : minLength) + Math.random() * (typeof maxRandom === 'undefined' ? 5 : maxRandom)),
 	    dist = {
 		    insult: Math.round(0.2 * length),
 		    statement: Math.round(0.8 * length),
-	    }, i, statements
+	    }, i
 
 	for (i = 0; i < dist.insult; i += 1) {
 		paragraph.push(generateInsult(Math.random() > 0.3) + '!')
@@ -62,64 +64,90 @@ generateUsername = function() {
 	return '{marginalized.nouns}'.randomRepeat(2, 2).replaceTerms().toLowerCase().replace(/[^a-z]/g, '')
 }
 
-$(document).ready(function () {
-	var currentBackgroundImage = tumblr.resources.images.backgrounds.random(),
-	    renderInsult,
-	    renderWar,
-	    updateBackground
+renderInsult = function () {
+	$('#insult')
+		.empty()
+		.append($('<p>').text(generateInsult(true).replaceTerms().tumblrize(Math.random() > 0.8).toUpperCase()))
+}
 
-	renderInsult = function () {
-		var insult = $('<p>').text(generateInsult(true).replaceTerms().tumblrize($('#tumblrize-grammar').prop('checked')).toUpperCase())
+renderBlog = function () {
+	var randomAge = 13 + Math.floor(Math.random() * 10),
+	    ownerUsername = generateUsername(),
+	    mangleChance = 0.4,
+	    i, title, about, presentation, argument, reblogs = [], reblogContainer, hashtags = []
 
-		$('#argument').empty().append(insult).attr('class', 'insult')
+	// Add title and presentation
+	title = tumblr.resources.titles.random().replaceTerms()
+	about = [randomAge, '{alignments}', '{politics.nouns}'].join(' / ').replaceTerms()
+	presentation = _.map(_.sample(tumblr.resources.presentations, 3), function (p) {
+		return $('<li>').text(p.replaceTerms())
+	})
+
+	// Create argument
+	argument = $('<p>').text(generateParagraph(Math.random() > mangleChance))
+	for (i = 0; i < 2 + Math.random() * 3; i += 1) {
+		argument = $('<div>').append(
+			$('<cite>').text(generateUsername() + ':'),
+			$('<blockquote>').append(argument),
+			$('<p>').text(Math.random() > 0.6 ?
+			              generateParagraph(Math.random() > mangleChance) :
+			              (generateInsult(true) + '!').replaceTerms().tumblrize(Math.random() > mangleChance))
+		)
 	}
 
-	renderWar = function () {
-		var mangleGrammar = $('#tumblrize-grammar').prop('checked'),
-		    numReplies = $('#num-replies').val(),
-		    war = $('<p/>').text(generateParagraph(mangleGrammar)),
-		    i, username, blockquote, reply
+	// Add hashtags
+	_.forEach(_.sample(tumblr.resources.concepts.awesome, 5 + Math.floor(Math.random() * 3)), function (concept) {
+		hashtags.push($('<li>').text('#' + concept))
+	})
 
-		for (i = 0; i < numReplies; i += 1) {
-			username = $('<p/>').text(generateUsername() + ':').attr('class', 'username')
-			blockquote = $('<blockquote/>').append(war)
-			reply = $('<p/>').text(Math.random() > 0.6 ? generateParagraph($('#tumblrize-grammar').prop('checked'), 4, 1) : generateInsult(true).replaceTerms().tumblrize(mangleGrammar).toUpperCase())
+	// Add reblogs/likes
+	for (i = 0; i < 5 + Math.random() * 10; i += 1) {
+		reblogContainer = $('<li>')
+		reblogContainer.append($('<strong>').attr('class', 'username').text(generateUsername()))
 
-			war = $('<div/>').append(username).append(blockquote).append(reply)
-		}
-
-		$('#argument').empty().append(war).attr('class', 'war')
-	}
-
-	updateBackground = function () {
-		if ($('#tumblrize-grammar').prop('checked')) {
-			$('body').addClass('tumblrized')
-			if ($('body').css('background-image').indexOf(currentBackgroundImage) === -1) {
-				$('body').css('background-image', 'url(static/img/bg/' + currentBackgroundImage + ')')
-			}
+		if (Math.random() > 0.7) {
+			reblogContainer
+				.append($('<span>').attr('class', 'reblog').text(' reblogged this from ' + ownerUsername + ' and added:'))
+				.append($('<p>').attr('class', 'insult').text((generateInsult(true) + '!').replaceTerms().tumblrize(true)))
 		}
 		else {
-			$('body').removeClass('tumblrized').css('background-image', 'none')
+			reblogContainer
+				.append($('<span>').attr('class', 'like').text(' likes this'))
 		}
+
+		reblogs.push(reblogContainer)
 	}
 
-	// Randomly switch background now and then
-	window.setInterval(function () { currentBackgroundImage = tumblr.resources.images.backgrounds.random() }, 4000)
+	$('#title').text(title)
+	$('#about').text(about)
+	$('#presentation').empty().append(presentation)
+	$('#argument').empty().append(argument)
+	$('#hashtags').empty().append(hashtags)
+	$('#reblogs').empty().append(reblogs)
+
+	if ($('body').css('background-image').indexOf(window.currentBackgroundImage) === -1) {
+		$('body').css('background-image', 'url(static/img/bg/' + window.currentBackgroundImage + ')')
+	}
+}
+
+$(document).ready(function () {
+	// Randomly switch background every now and then
+	window.currentBackgroundImage = tumblr.resources.images.backgrounds.random()
+	window.setInterval(function () { window.currentBackgroundImage = tumblr.resources.images.backgrounds.random() }, 4000)
 
 	// Add some stats
 	$('.privileged-groups-length').text(' ' + (tumblr.resources.privileged.adjectives.length * tumblr.resources.privileged.nouns.length) + ' ')
 	$('.marginalized-groups-length').text(' ' + (tumblr.resources.marginalized.nouns.length * tumblr.resources.marginalized.verbs.length) + ' ')
 
-	$('#argument').removeClass('loading')
+	renderBlog()
+	renderInsult()
 
-	renderWar()
-
-	$('.controls button.generate-insult').click(function () {
+	$('#controls button.generate-insult').click(function () {
+		$('#insult').show()
 		renderInsult()
-		updateBackground()
 	})
-	$('.controls button.generate-war').click(function () {
-		renderWar()
-		updateBackground()
+	$('#controls button.generate-blog').click(function () {
+		$('#insult').hide()
+		renderBlog()
 	})
 })
