@@ -45,7 +45,7 @@ tumblr.resources.insults = {
 		'racist',
 		'rape-culture-supporting',
 		'worthless',
-	].concat(tumblr.generators.phobias()),
+	].concat(tumblr.resources.phobias),
 	nouns: [
 		'MRA',
 		'TERF',
